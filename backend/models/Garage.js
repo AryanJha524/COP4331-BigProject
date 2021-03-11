@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-    firstName: {
-        type: String,
+const GarageSchema = new Schema({
+    spotsCount: {
+        type: Number,
         required: true
     },
     lastName: {
@@ -21,4 +21,4 @@ const UserSchema = new Schema({
     }
 })
 
-module.exports = User = mongoose.model("user", UserSchema);
+module.exports = Garage = mongoose.model("garage", GarageSchema);
