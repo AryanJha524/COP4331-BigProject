@@ -6,10 +6,10 @@ const GarageSchema = new Schema({
         type: Number,
         required: true
     },
-    notifications: {
+    notifications: [{
         type: ObjectId,
         required: true
-    }
+    }]
 })
 
 module.exports = Garage = mongoose.model("garage", GarageSchema);
