@@ -8,8 +8,8 @@ const GarageSchema = new Schema({
     },
     notifications: {
         type: ObjectId,
-        required: true,
-    },
+        required: true
+    }
 })
 
 module.exports = Garage = mongoose.model("garage", GarageSchema);
