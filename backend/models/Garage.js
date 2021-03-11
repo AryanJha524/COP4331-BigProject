@@ -6,19 +6,10 @@ const GarageSchema = new Schema({
         type: Number,
         required: true
     },
-    lastName: {
-        type: String,
+    notifications: {
+        type: ObjectId,
         required: true,
     },
-    email: {
-        type: String,
-        required: true,
-        match: [emailRegex]
-    },
-    password: {
-        type: String,
-        required: true,
-    }
 })
 
 module.exports = Garage = mongoose.model("garage", GarageSchema);
