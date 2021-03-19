@@ -19,7 +19,9 @@ const GarageSchema = new Schema({
         match: addressRegex,
         required: true
     },
-    spotsArray: [{
+    // each element in this array represents a spot object.
+    // a spot object contains the level (floor), number, and whether or not it is open
+    spotsArray: [{ 
         level: {
             type: String,
             required: true
