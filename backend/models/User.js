@@ -12,14 +12,14 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    email: {
+    userName: {
         type: String,
         required: true,
-        match: [emailRegex]
     },
-    password: {
-        type: String,
+    isParked: {
+        type: Boolean,
         required: true,
+        default: false
     }
 })
 
