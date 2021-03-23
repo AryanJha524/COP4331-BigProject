@@ -1,23 +1,40 @@
 const router = require('express').Router();
 const Garage = require('../models/Garage');
 
+
+
+router.post('/createGarage', (req, res) => {
+    const newGarage = new Garage({
+        name: req.body.garageName,
+        numberSpots: req.body.numberSpots,
+        location: req.body.location,
+        spotsArray: req.body.spotsArray
+    });
+    newGarage
+    .save()
+    .then(garage => res.status(200).json(garage))
+    .catch(err => res.status(400).json(err));
+}) 
+
+
 // isFull api
 router.post('/isFull', (req, res) => {
     Garage.findOne({
         name: req.body.garageName
     })
     .then(garage => {
+        console.log(garage);
         if (garage) {
             var spotsArray = garage.spotsArray;
             for (i = 0; i < spotsArray.length; i++) {
                 if (spotsArray[i].isOpen === true) {
-                    return {isFull: false};
+                    return res.status(200).json({isFull: false});
                 }
             }
-            return {isFull: true}
+            return res.status(200).json({isFull: true});
         }
         else {
-            return {error: "No garage found"};
+            return res.status(200).json({error: "No garage found"});
         }
     })
 });
@@ -51,6 +68,15 @@ router.post('/isPark', (req, res) => {
     })
 })
 
+// isFindSpot api
+router.post('/isFindSpot', (req, res) => {
+    var userLocation = req.body.location;
+    // find closest garage that isn't full
+    // go through all garages, call api to compare distances
+    // order garages array by closest distance
+    // go through garage array, return object of first one that isnt full (call separate api)
+    return res.status(200).json("is find point");
+})
 
 
 module.exports = router;

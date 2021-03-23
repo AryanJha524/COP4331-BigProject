@@ -17,25 +17,26 @@ app.use(
 app.use(bodyParser.json());
 
 
-/*
-Include routes for different endpoints here
-    ex) app.use('/users', usersRouter); // userRouter is imported from routes folder
-*/
-app.use('/garages', garageRouter);
-
-
-
-
 
 
 const database = require("./config/keys").mongoURI;
 
 mongoose.connect(
     database,
-    {useNewUrlParser: true}
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
 )
 .then(() => console.log("Connected to database successfully"))
 .catch(err => console.log(err));
+
+/*
+Include routes for different endpoints here
+    ex) app.use('/users', usersRouter); // userRouter is imported from routes folder
+*/
+app.use('/garages', garageRouter);
+
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

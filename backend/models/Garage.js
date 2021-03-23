@@ -16,7 +16,6 @@ const GarageSchema = new Schema({
     },
     location: {
         type: String,
-        match: addressRegex,
         required: true
     },
     // each element in this array represents a spot object.
@@ -26,7 +25,7 @@ const GarageSchema = new Schema({
             type: String,
             required: true
         },
-        spotNumber: {
+        spot: {
             type: String,
             required: true
         },
@@ -38,4 +37,4 @@ const GarageSchema = new Schema({
     ]
 })
 
-module.exports = Garage = mongoose.model("garage", GarageSchema);
+module.exports = Garage = mongoose.model("Garages", GarageSchema);
