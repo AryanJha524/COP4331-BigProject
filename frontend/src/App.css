@@ -28,6 +28,64 @@
   color: #61dafb;
 }
 
+.Landing-Page
+{
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+
+background: #FFFFFF;
+}
+
+.Login-Text{
+  position: absolute;
+  width: 569px;
+  height: 132px;
+  left: 1079px;
+  top: 195px;
+}
+
+.Welcome{
+  position: absolute;
+  width: 687px;
+  height: 205px;
+  left: 196px;
+  top: 433px;
+}
+
+.Login-Rectangle{
+  position: absolute;
+  width: 518px;
+  height: 91px;
+  left: 1105px;
+  top: 413px;
+  
+  background: #000000;
+  border-radius: 30px;
+}
+
+.Left-Login{
+  position: absolute;
+  width: 824px;
+  height: 850px;
+  left: 128px;
+  top: 110px;
+  
+  background: #FAE6A0;
+  border-radius: 50px 0px 0px 50px;
+}
+.Right-Login{
+  position: absolute;
+width: 824px;
+height: 850px;
+left: 952px;
+top: calc(50% - 850px/2 - 5px);
+
+background: #F8C615;
+border-radius: 0px 50px 50px 0px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
