@@ -23,7 +23,6 @@ router.post('/isFull', (req, res) => {
         name: req.body.garageName
     })
     .then(garage => {
-        console.log(garage);
         if (garage) {
             var spotsArray = garage.spotsArray;
             for (i = 0; i < spotsArray.length; i++) {
@@ -52,18 +51,19 @@ router.post('/isPark', (req, res) => {
             var spotNumber = req.body.spotNumber;
             garage.updateOne({"spotsArray.level": spotLevel, "spotsArray.spot": spotNumber},
             {'$set': {
-                    'spotsArray.$.isOpen': false
+                    'spotsArray.$.isOpen': true
                 }},
-                function(err, model) {
+                function(err) {
                     if (err) {
                         return res.json(err);
                     }
-                }
-            )
-            return {message: "Spot updated"};
+                    else {
+                        return res.status(200).json({message: "Spot updated"});
+                    }
+                })
         }
         else {
-            return {err: "No garage found"};
+            return res.status(200).json({err: "No garage found"});
         }
     })
 })
