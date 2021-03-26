@@ -7,6 +7,19 @@ import {Avatar, Button, CssBaseline, TextField,
 //import Image from '@material-ui/core/Image';
 import useStyles from './styles'
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 export default function LoginPage() {
   const classes = useStyles();
 
@@ -14,7 +27,7 @@ export default function LoginPage() {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image}>
-        <Typography component="h1" variant="h1">
+        <Typography align="center" component="h1" variant="h1">
             Welcome to Parky.com, the best parking app for university students!
         </Typography>
       </Grid>
@@ -73,7 +86,7 @@ export default function LoginPage() {
               </Grid>
             </Grid>
             <Box mt={5}>
-              {/* <Copyright /> */}
+              <Copyright />
             </Box>
           </form>
         </div>

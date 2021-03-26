@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage'
+import PreferencesPage from './pages/PreferencesPage'
 
 function App() {
   return (
@@ -22,7 +24,9 @@ function App() {
     //   </header>
     // </div>
     //<Home />
-    <LoginPage />
+    // <LoginPage />
+    // <RegisterPage />
+    <PreferencesPage/>
   );
 }
 

@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
           height: '100vh',
         },
         image: {
-          backgroundImage: "url(../images/carLoginPic.jpg)",
+        //   backgroundImage: "url(../images/carLoginPic.jpg)",
+        backgroundImage:"url(https://source.unsplash.com/random)",
           // backgroundRepeat: 'no-repeat',
           backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -30,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
         },
         submit: {
           margin: theme.spacing(3, 0, 2),
+        },
+        icon: {
+            marginRight: '20px'
         },
       }));
       
