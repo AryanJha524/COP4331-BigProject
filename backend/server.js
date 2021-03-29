@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 // importing routers 
 const garageRouter = require('../backend/routes/garages');
-
+const userRouter = require('../backend/routes/users');
 
 const app = express();
 
@@ -36,7 +36,7 @@ Include routes for different endpoints here
     ex) app.use('/users', usersRouter); // userRouter is imported from routes folder
 */
 app.use('/garages', garageRouter);
-
+app.use('/users', userRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
