@@ -24,4 +24,19 @@ router.post('/create', (req, res) => {
 })
 
 
+// works for existing users, not yet for non-existant usernames, need to fix
+router.post('/parkUser', (req, res) => {
+    const filter = {userName: req.body.userName};
+    const update = {isParked: req.body.parkStatus};
+    User.findOneAndUpdate(filter, update, {new: true})
+    .then(user => {
+        if (user) {
+            return res.status(200).json(user);
+        }
+    })
+    .catch(err => res.status(200).json(err));
+})
+
+
+
 module.exports = router;
