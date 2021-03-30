@@ -4,7 +4,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
      Checkbox, Link, Grid, Box, Typography, Container, FormControl, FormLabel, FormGroup, FormHelperText, InputLabel,
-     MenuItem, Select, AppBar, Toolbar,
+     MenuItem, Select, AppBar, Toolbar, Switch, 
     } from '@material-ui/core'
 import { CallMissedSharp } from '@material-ui/icons';
 
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
   icon: {
-    marginRight: '20px'
+    marginRight: '20px',
 },
 }));
 
@@ -135,6 +135,11 @@ export default function SignIn() {
     const handleAgeChange = (event) => {
       setAge(event.target.value);
     };
+    const [checked, setChecked] = React.useState(false);
+
+  const toggleChecked = () => {
+    setChecked((prev) => !prev);
+  };
   
     const { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday } = state;
     const error = [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday].filter((v) => v).length !== 2;
@@ -153,6 +158,7 @@ export default function SignIn() {
         </Toolbar>
       </AppBar>
     </Grid>
+    <Grid item xs={false} sm={4} md={7}>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -242,6 +248,28 @@ export default function SignIn() {
               Save
             </Button>
     </Container>
+    </Grid>
+    <Grid>
+      <Container>
+        <Typography> Account Credentials </Typography>
+        <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Change Password
+        </Button>
+      </Container>
+    </Grid>
+    <Grid>
+      <Container>
+        <Typography> Notifications </Typography>
+        <FormGroup>
+          <FormControlLabel control={<Switch> color="primary" size="Normal" checked={checked} onChange={toggleChecked} </Switch>} label ="Push Notifications"/>
+        </FormGroup>
+      </Container>
+    </Grid>
     </>
   );
 }
