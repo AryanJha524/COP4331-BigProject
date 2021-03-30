@@ -32,7 +32,7 @@ export default function RegisterPage() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Please Log in
+            Register Here
           </Typography>
           <form className={classes.form} noValidate>
           <TextField
@@ -79,6 +79,17 @@ export default function RegisterPage() {
               id="password"
               autoComplete="current-password"
             />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="Confpassword"
+              label="Confirm Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
@@ -90,7 +101,7 @@ export default function RegisterPage() {
               color="primary"
               className={classes.submit}
             >
-              Log In
+              Register!
             </Button>
             <Grid container>
               <Grid item xs>
