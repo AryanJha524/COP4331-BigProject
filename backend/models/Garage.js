@@ -23,26 +23,10 @@ const GarageSchema = new Schema({
         type: Number,
         required: true
     },
-<<<<<<< HEAD
     Geometry : GeoGarage,
     // each element in this array represents a spot object.
     // a spot object contains the level (floor), number, and whether or not it is open
     spotsArray: [{ 
-=======
-    location: {
-        latitude: {
-            type: String,
-            required: true
-        },
-        longitude: {
-            type: String,
-            required: true
-        },
-    },
-    // each element in this array represents a spot object.
-    // a spot object contains the spot number whether or not it is open
-    spotsArray: [{
->>>>>>> 47b3d31675dba327b2398f1e143af1ebf575bd6f
         spot: {
             type: String,
             required: true
