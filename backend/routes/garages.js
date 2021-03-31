@@ -2,11 +2,19 @@ const router = require('express').Router();
 const Garage = require('../models/Garage');
 
 
+<<<<<<< HEAD
+=======
+// createGarage api
+>>>>>>> 47b3d31675dba327b2398f1e143af1ebf575bd6f
 router.post('/createGarage', (req, res) => {
     const newGarage = new Garage({
         name: req.body.garageName,
         numberSpots: req.body.numberSpots,
+<<<<<<< HEAD
         Geometry: req.body.GeoGarage,
+=======
+        // location: req.body.location,
+>>>>>>> 47b3d31675dba327b2398f1e143af1ebf575bd6f
         spotsArray: req.body.spotsArray
     });
     newGarage
@@ -26,7 +34,8 @@ router.post('/isFull', (req, res) => {
             var spotsArray = garage.spotsArray;
             for (i = 0; i < spotsArray.length; i++) {
                 if (spotsArray[i].isOpen === true) {
-                    return res.status(200).json({isFull: false});
+                    const openSpot = {spot: spotsArray[i].spot};
+                    return res.status(200).json({isFull: false, openSpotNumber: spotsArray[i].spot});
                 }
             }
             return res.status(200).json({isFull: true});
@@ -39,27 +48,26 @@ router.post('/isFull', (req, res) => {
 
 
 // isPark api 
-router.post('/isPark', (req, res) => {
+router.post('/parkSpot', (req, res) => {
     Garage.findOne({
         name: req.body.garageName
     })
     .then(garage => {
         if (garage) {
             // update provided level and spot number in this garage's array
-            var spotLevel = req.body.level;
             var spotNumber = req.body.spotNumber;
-            garage.updateOne({"spotsArray.level": spotLevel, "spotsArray.spot": spotNumber},
-            {'$set': {
-                    'spotsArray.$.isOpen': true
-                }},
-                function(err) {
-                    if (err) {
-                        return res.json(err);
-                    }
-                    else {
-                        return res.status(200).json({message: "Spot updated"});
-                    }
-                })
+
+            if (spotNumber <= 0) {
+                return res.status(200).json({err: "Invalid spot"});
+            }
+            if (!garage.spotsArray[spotNumber - 1].isOpen) {
+                return res.status(200).json({err: "Can't park here"});
+            }    
+            garage.spotsArray[spotNumber - 1].isOpen = false;
+            garage.save()
+            .then(garage => res.status(200).json({success: "Spot closed!"}))
+            .catch(err => res.status(200).json(err));                
+            
         }
         else {
             return res.status(200).json({err: "No garage found"});
@@ -67,6 +75,7 @@ router.post('/isPark', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 // isFindSpot api
 router.post('/isFindSpot', (req, res) => {
 
@@ -94,3 +103,35 @@ router.post('/isFindSpot', (req, res) => {
       .catch(err => res.status(200).json(err));
 });
 module.exports = router;
+=======
+// isPark api 
+router.post('/leaveSpot', (req, res) => {
+    Garage.findOne({
+        name: req.body.garageName
+    })
+    .then(garage => {
+        if (garage) {
+            // update provided level and spot number in this garage's array
+            var spotNumber = req.body.spotNumber;
+
+            if (spotNumber <= 0) {
+                return res.status(200).json({err: "Invalid spot"});
+            }
+            
+            garage.spotsArray[spotNumber - 1].isOpen = true;
+            garage.save()
+            .then(garage => res.status(200).json({success: "Spot opened!"}))
+            .catch(err => res.status(200).json(err));                
+            
+        }
+        else {
+            return res.status(200).json({err: "No garage found"});
+        }
+    })
+})
+
+
+
+
+module.exports = router;
+>>>>>>> 47b3d31675dba327b2398f1e143af1ebf575bd6f
