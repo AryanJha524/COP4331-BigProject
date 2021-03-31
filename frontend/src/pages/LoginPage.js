@@ -44,7 +44,7 @@ export default function LoginPage() {
           <Typography component="h1" variant="h5">
             Please Log in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form onSubmit={handleSubmit} className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"

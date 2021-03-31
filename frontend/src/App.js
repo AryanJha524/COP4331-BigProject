@@ -9,9 +9,7 @@ import PreferencesPage from './pages/PreferencesPage'
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import fire from './fire.js';
-import Login from './components/session/Login';
-import ListAllNumbers from './components/phonebook/ListAllNumbers';
-import AddNumber from './components/phonebook/AddNumber';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
