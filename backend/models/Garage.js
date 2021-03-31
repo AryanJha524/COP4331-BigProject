@@ -15,11 +15,17 @@ const GarageSchema = new Schema({
         required: true
     },
     location: {
-        type: String,
-        required: true
+        latitude: {
+            type: String,
+            required: true
+        },
+        longitude: {
+            type: String,
+            required: true
+        },
     },
     // each element in this array represents a spot object.
-    // a spot object contains the level (floor), number, and whether or not it is open
+    // a spot object contains the spot number whether or not it is open
     spotsArray: [{
         spot: {
             type: String,
