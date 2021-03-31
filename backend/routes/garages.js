@@ -27,7 +27,8 @@ router.post('/isFull', (req, res) => {
             var spotsArray = garage.spotsArray;
             for (i = 0; i < spotsArray.length; i++) {
                 if (spotsArray[i].isOpen === true) {
-                    return res.status(200).json({isFull: false});
+                    const openSpot = {spot: spotsArray[i].spot};
+                    return res.status(200).json({isFull: false}, openSpot);
                 }
             }
             return res.status(200).json({isFull: true});
@@ -47,20 +48,17 @@ router.post('/isPark', (req, res) => {
     .then(garage => {
         if (garage) {
             // update provided level and spot number in this garage's array
-            var spotLevel = req.body.level;
             var spotNumber = req.body.spotNumber;
-            garage.updateOne({"spotsArray.level": spotLevel, "spotsArray.spot": spotNumber},
-            {'$set': {
-                    'spotsArray.$.isOpen': true
-                }},
-                function(err) {
-                    if (err) {
-                        return res.json(err);
-                    }
-                    else {
-                        return res.status(200).json({message: "Spot updated"});
-                    }
-                })
+
+            if (spotNumber <= 0) {
+                return res.status(200).json({err: "Invalid spot"})
+            }
+                
+            garage.spotsArray[spotNumber - 1].isOpen = false;
+            garage.save()
+            .then(garage => res.status(200).json({success: "Spot updated!"}))
+            .catch(err => res.status(200).json(err));                
+            
         }
         else {
             return res.status(200).json({err: "No garage found"});
@@ -68,15 +66,7 @@ router.post('/isPark', (req, res) => {
     })
 })
 
-// isFindSpot api
-router.post('/isFindSpot', (req, res) => {
-    var userLocation = req.body.location;
-    // find closest garage that isn't full
-    // go through all garages, call api to compare distances
-    // order garages array by closest distance
-    // go through garage array, return object of first one that isnt full (call separate api)
-    return res.status(200).json("is find point");
-})
+
 
 
 module.exports = router;

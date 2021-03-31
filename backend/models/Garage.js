@@ -20,11 +20,7 @@ const GarageSchema = new Schema({
     },
     // each element in this array represents a spot object.
     // a spot object contains the level (floor), number, and whether or not it is open
-    spotsArray: [{ 
-        level: {
-            type: String,
-            required: true
-        },
+    spotsArray: [{
         spot: {
             type: String,
             required: true
@@ -34,7 +30,7 @@ const GarageSchema = new Schema({
             required: true
         }
     }
-    ]
+    ],
 })
 
 module.exports = Garage = mongoose.model("Garages", GarageSchema);
