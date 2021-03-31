@@ -19,7 +19,14 @@ function Copyright() {
     </Typography>
   );
 }
-
+const handleSubmit = (e) => {
+  e.preventDefault();
+  fire.auth().signInWithEmailAndPassword(email, password)
+    .catch((error) => {
+      console.error('Incorrect username or password');
+    });
+  }
+  
 export default function LoginPage() {
   const classes = useStyles();
 
