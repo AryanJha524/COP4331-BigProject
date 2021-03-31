@@ -2,12 +2,11 @@ const router = require('express').Router();
 const Garage = require('../models/Garage');
 
 
-
 router.post('/createGarage', (req, res) => {
     const newGarage = new Garage({
         name: req.body.garageName,
         numberSpots: req.body.numberSpots,
-        location: req.body.location,
+        Geometry: req.body.GeoGarage,
         spotsArray: req.body.spotsArray
     });
     newGarage
@@ -70,13 +69,28 @@ router.post('/isPark', (req, res) => {
 
 // isFindSpot api
 router.post('/isFindSpot', (req, res) => {
-    var userLocation = req.body.location;
+
     // find closest garage that isn't full
+    // go through garage array, return object of first one that isnt full (call separate api)
+
     // go through all garages, call api to compare distances
     // order garages array by closest distance
-    // go through garage array, return object of first one that isnt full (call separate api)
-    return res.status(200).json("is find point");
-})
-
-
+    Garage.find(
+        {
+          location:
+            {
+                $near :
+               {
+                   $geometry: 
+                   {
+                       type: "Point",  
+                       coordinates: [req.body.lng,req.body.lat]
+                    },
+                    $maxDistance: 100000
+               }
+            }
+        }
+     ).then(garage => res.status(200).json(garage))
+      .catch(err => res.status(200).json(err));
+});
 module.exports = router;
