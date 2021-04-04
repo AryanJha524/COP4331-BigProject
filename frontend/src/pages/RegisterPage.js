@@ -1,26 +1,56 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {Avatar, Button, CssBaseline, TextField, 
   FormControlLabel, Checkbox, Link, 
   Paper, Box, Grid, Typography, AppBar, Toolbar, Container
 } from '@material-ui/core';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
+import registerStyle from './registerStyle';
+import history from './../history';
+import fire from '../fire.js';
 
-//import Image from '@material-ui/core/Image';
-import useStyles from './styles'
+const RegisterPage = ({history}) => {
+  const classes = registerStyle();
 
-export default function RegisterPage() {
-  const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleEmail = (event) => {
+    event.preventDefault();
+    setEmail(event.target.value);
+  }
+  
+  const handlePassword = (event) => {
+    event.preventDefault();
+    setPassword(event.target.value);
+  }
+  
+  const handleSignUp = useCallback(async event =>{
+    event.preventDefault();
+    // const { email, password} = event.target.elements;
+
+    try {
+      await fire
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+        history.push("/dashboard");
+    } catch(error){
+      alert(error)
+    }
+  }, [history]);
   
   return (
       <>
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" variant="regular">
+      <AppBar className={classes.appbar} position="absolute" variant="regular">
             <Toolbar>
                 <DriveEtaIcon className={classes.icon}/>
                 <Typography variant="h6">
                     Parky Registration
                 </Typography>
+                <Button className={classes.homeButton} onClick={() => history.push('/')} color="inherit">
+          {"Home"}
+          </Button>
             </Toolbar>
         </AppBar>
       <Grid item xs={false} sm={4} md={7} className={classes.image}>
@@ -62,10 +92,11 @@ export default function RegisterPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              value={email}
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={handleEmail}
               autoFocus
             />
             <TextField
@@ -76,7 +107,8 @@ export default function RegisterPage() {
               name="password"
               label="Password"
               type="password"
-              id="password"
+              value={password}
+              onChange={handlePassword}
               autoComplete="current-password"
             />
             <TextField
@@ -100,24 +132,18 @@ export default function RegisterPage() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSignUp}
             >
               Register!
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Register here"}
+                <Link href="#" variant="body2" 
+                onClick={() => history.push('/login')}>
+                  {"Already have an account? Log in here"}
                 </Link>
               </Grid>
             </Grid>
-            <Box mt={5}>
-              {/* <Copyright /> */}
-            </Box>
           </form>
         </div>
       </Grid>
@@ -125,3 +151,5 @@ export default function RegisterPage() {
     </>
   );
 }
+
+export default RegisterPage;
