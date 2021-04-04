@@ -1,10 +1,13 @@
 import React from 'react';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import SettingsIcon from '@material-ui/icons/Settings';
+import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
      Checkbox, Link, Grid, Box, Typography, Container, FormControl, FormLabel, FormGroup, FormHelperText, InputLabel,
-     MenuItem, Select, AppBar, Toolbar, Switch, 
+     MenuItem, Select, AppBar, Toolbar, Switch, IconButton
     } from '@material-ui/core'
 import { CallMissedSharp } from '@material-ui/icons';
 
@@ -97,13 +100,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  root: {display: 'flex',
+  root: {
+    flexGrow: 1,
   },
   formControl: {
     margin:theme.spacing(3),
@@ -117,7 +121,10 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     marginRight: '20px',
-},
+  },
+  toolbarButtons: {
+    marginLeft: 'auto',
+  },
 }));
 
 export default function SignIn() {
@@ -155,15 +162,21 @@ export default function SignIn() {
           <Typography variant="h6">
             Account Preferences
           </Typography>
+          <div className={classes.toolbarButtons}>
+          <IconButton color="inherit">
+            <HomeIcon/>
+          </IconButton>
+          </div>          
         </Toolbar>
       </AppBar>
     </Grid>
-    <Grid item xs={false} sm={4} md={7}>
+    <Grid container className={classes.root} spacing={2}>
+    <Grid item xs={4} >
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
        <Box mt={8}>
-        <Avatar classname={classes.avatar} align="center">
+        <Avatar className={classes.avatar} align="center">
           <AccessTimeIcon/>
         </Avatar>
       </Box>
@@ -249,26 +262,41 @@ export default function SignIn() {
             </Button>
     </Container>
     </Grid>
-    <Grid>
+    <Grid item xs={2}>
       <Container>
-        <Typography> Account Credentials </Typography>
-        <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Change Password
-        </Button>
+        <div className={classes.paper}>
+          <Box mt={8}>
+          <Avatar className={classes.avatar} align="center">
+          <NotificationsActiveIcon/>
+        </Avatar>
+          <Typography> Account Credentials </Typography>
+          <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Change Password
+          </Button>
+        </Box>
+        </div>
       </Container>
     </Grid>
-    <Grid>
+    <Grid item xs={4}>
       <Container>
+        <div className={classes.paper}>
+          <Box mt={8}>
+          <Avatar className={classes.avatar} align="center">
+          <AccountCircleIcon/>
+        </Avatar>
         <Typography> Notifications </Typography>
         <FormGroup>
           <FormControlLabel control={<Switch> color="primary" size="Normal" checked={checked} onChange={toggleChecked} </Switch>} label ="Push Notifications"/>
         </FormGroup>
+        </Box>
+        </div>
       </Container>
+    </Grid>
     </Grid>
     </>
   );
