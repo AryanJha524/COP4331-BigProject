@@ -83,8 +83,8 @@ function App() {
 
   return (
     <div className="app">
-      <Dashboard />
-      {/* <Routes /> */}
+      {/* <Dashboard /> */}
+      <Routes />
     </div>
   );
 }
