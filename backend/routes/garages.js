@@ -88,4 +88,25 @@ router.get('/findSpot', (req, res) => {
 });
 
 
+router.get('/openSpots', (req, res) => {
+    const garageName = req.body.garageName;
+    Garage.findOne({name: garageName})
+    .then(garage => {
+        if (garage) {
+            openSpots = 0;
+            var spotsArray = garage.spotsArray;
+            for (i = 0; i < spotsArray.length; i++) {
+                if (spotsArray[i].isOpen === true) {
+                    openSpots++;
+                }
+            }
+            return res.status(200).json({numOpenSpots: openSpots});
+        }
+        else {
+            return res.status(200).json({err: "No garage found"});
+        }
+    })
+    .catch(err => res.status(200).json(err))
+})
+
 module.exports = router;
