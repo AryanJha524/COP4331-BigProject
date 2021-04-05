@@ -6,7 +6,7 @@ router.post('/createGarage', (req, res) => {
     const newGarage = new Garage({
         name: req.body.garageName,
         numberSpots: req.body.numberSpots,
-        Geometry: req.body.GeoGarage,
+        location: req.body.location,
         spotsArray: req.body.spotsArray
     });
     newGarage
@@ -67,30 +67,25 @@ router.post('/parkSpot', (req, res) => {
     })
 })
 
-// isFindSpot api
-router.post('/isFindSpot', (req, res) => {
-
-    // find closest garage that isn't full
-    // go through garage array, return object of first one that isnt full (call separate api)
-
-    // go through all garages, call api to compare distances
-    // order garages array by closest distance
-    Garage.find(
-        {
-          location:
-            {
-                $near :
-               {
-                   $geometry: 
-                   {
-                       type: "Point",  
-                       coordinates: [req.body.lng,req.body.lat]
-                    },
-                    $maxDistance: 100000
-               }
-            }
-        }
-     ).then(garage => res.status(200).json(garage))
-      .catch(err => res.status(200).json(err));
+// findSpot api
+router.get('/findSpot', (req, res) => {
+    const long=req.body.lng;
+    const lat=req.body.lat;
+    Garage.find({location:{         
+            $near: {
+                $geometry: {
+                        type: "Point",
+                        coordinates: [long, lat]}             
+                    }
+                }}, function (error, result){          
+                    if (error) {
+                        res.status(200).json(error)
+                    }
+                    else {
+                        res.status(200).json(result);
+                    }
+                });
 });
+
+
 module.exports = router;
