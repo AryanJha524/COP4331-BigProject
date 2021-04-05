@@ -67,6 +67,32 @@ router.post('/parkSpot', (req, res) => {
     })
 })
 
+// leaveSpot api
+// isPark api 
+router.post('/leaveSpot', (req, res) => {
+    Garage.findOne({
+        name: req.body.garageName
+    })
+    .then(garage => {
+        if (garage) {
+            // update provided level and spot number in this garage's array
+            var spotNumber = req.body.spotNumber;
+
+            if (spotNumber <= 0) {
+                return res.status(200).json({err: "Invalid spot"});
+            }    
+            garage.spotsArray[spotNumber - 1].isOpen = true;
+            garage.save()
+            .then(garage => res.status(200).json({success: "Spot opened!"}))
+            .catch(err => res.status(200).json(err));                
+            
+        }
+        else {
+            return res.status(200).json({err: "No garage found"});
+        }
+    })
+})
+
 // findSpot api
 router.get('/findSpot', (req, res) => {
     const long=req.body.lng;
@@ -87,7 +113,7 @@ router.get('/findSpot', (req, res) => {
                 });
 });
 
-
+// openSpots api
 router.get('/openSpots', (req, res) => {
     const garageName = req.body.garageName;
     Garage.findOne({name: garageName})
