@@ -1,92 +1,54 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Component } from 'react';
 import Home from './pages/Home'; 
 import { BrowserRouter as Router} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import fire from './fire.js';
 import RegisterPage from './pages/RegisterPage';
-import history from './history';
 import Routes from './Routes';
 import Dashboard from './pages/Dashboard';
+import withFirebaseAuth from 'react-with-firebase-auth'
+// import firebase from 'firebase/app';
+import 'firebase/auth';
+var firebase = require('firebase/app').default;
 
-function App() {
+const firebaseApp = firebase.initializeApp(fire);
+const firebaseAppAuth = firebaseApp.auth();
 
-  const [user, setUser] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [hasAccount, setHasAccount] = useState(false);
+const providers = {
+  googleProvider: new firebase.auth.GoogleAuthProvider(),
+};
 
-  const clearInput = () => {
-    setEmail('');
-    setPassword('');
-  }
-
-  const clearErrors = () =>
-  {
-    setEmailError('');
-    setPasswordError('');
-  }
-
-  const handleLogin = () => {
-    clearErrors();
-    fire.auth().signInWithEmailAndPassword(email, password)
-    .catch(err => {
-      switch(err.code)
-      {
-        case "auth/invalid-email":
-        case "auth.user-disabled":
-          case "auth/user-not-found":
-            setEmailError(err.message);
-            break;
-          case "auth/wrong-password":
-            setPasswordError(err.message);
-            break;
-      }
-    });
-  };
-
-  const handleSignUp = () => {
-    clearErrors();
-    fire.auth().createUserWithEmailAndPassword(email, password)
-    .catch((err) => {
-      switch(err.code) {
-        case "auth/email-already-in-use":
-          case "auth/invalid-email":
-            setEmailError(err.message);
-            break;
-          case "auth/weak-password":
-            setPasswordError(err.message);
-            break;
-      }
-    });
-  }
-
-  const handleLogout = () => {
-    fire.auth().signOut();
-  };
-
-  const authListener = () => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user){
-        setUser(user);
-      } else {
-        setUser("");
-      }
-    });
-  };
-
-  useEffect(() => {
-    authListener();
-  }, []);
-
+class App extends React.Component {
+  
+  render(){
+    const {
+      user,
+      signOut,
+      signInWithGoogle,
+    } = this.props;
   return (
-    <div className="app">
-      {/* <Dashboard /> */}
-      <Routes />
-    </div>
+    // <div className="app">
+    //   {/* <Dashboard /> */}
+    //   <Routes />
+    // </div>
+    <div className="App">
+    <header className="App-header">
+      {
+        user 
+          ? <p>Hello, {user.displayName}</p>
+          : <p>Please sign in.</p>
+      }
+      {
+        user
+          ? <button onClick={signOut}>Sign out</button>
+          : <button onClick={signInWithGoogle}>Sign in with Google</button>
+      }
+    </header>
+  </div>
   );
+  }
 }
 
-export default App;
+export default withFirebaseAuth({
+  providers, firebaseAppAuth,})(App);

@@ -1,42 +1,93 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import {Avatar, Button, CssBaseline, TextField, 
   FormControlLabel, Checkbox, Link, 
   Paper, Box, Grid, Typography, AppBar, Toolbar, Container
 } from '@material-ui/core';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import registerStyle from './registerStyle';
-import history from './../history';
 import fire from '../fire.js';
+import history from './../history';
 
-const RegisterPage = ({history}) => {
+export default function RegisterPage(){
   const classes = registerStyle();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [verified, setVerified] = useState(false);
 
-  const handleEmail = (event) => {
-    event.preventDefault();
-    setEmail(event.target.value);
-  }
+  // const handleEmail = (event) => {
+  //   event.preventDefault();
+  //   setEmail(event.target.value);
+  // }
   
-  const handlePassword = (event) => {
-    event.preventDefault();
-    setPassword(event.target.value);
-  }
+  // const handlePassword = (event) => {
+  //   event.preventDefault();
+  //   setPassword(event.target.value);
+  // }
+
+  // const handleConfirmPassword = (event) => {
+  //   event.preventDefault();
+  //   setConfirmPassword(event.target.value);
+  // }
   
-  const handleSignUp = useCallback(async event =>{
-    event.preventDefault();
-    // const { email, password} = event.target.elements;
+  // function verifyEmail()
+  // {
+  //   var user = fire.auth().currentUser;
+  //   user.sendEmailVerification().then(function() {
+  //       window.alert("email verification sent");
+  //   }).catch(function(error){
+
+  //   });
+  // }
+
+  // const handleSignUp = useCallback(async event =>{
+  //   event.preventDefault();
+
+  //   if (passwordRef.current.value != confirmPasswordRef.current.value)
+  //     return setError('Passwords do not match');
+
+  //   try {
+  //     setError('');
+  //     setLoading(true);
+  //     await fire
+  //       .auth()
+  //       .createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
+        
+  //       // const user = fire.auth().currentUser;
+  //       // await user.sendEmailVerification();
+         
+  //       history.push("/dashboard");
+  //   } catch{
+  //     setError('Failed to create Account');
+  //   }
+  //   setLoading(false);
+  // }, [history]);
+
+  async function handleSignUp(e)
+  {
+    e.preventDefault();
+
+    if (passwordRef.current.value !== confirmPasswordRef.current.value)
+    {
+      return setError("Passwords do no match");
+    }
 
     try {
-      await fire
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-        history.push("/dashboard");
-    } catch(error){
-      alert(error)
+      setError("");
+      setLoading(true);
+      await fire.auth().createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
+      history.push("/dashboard");
+    } catch{
+      setError('Failed to create an account');
     }
-  }, [history]);
+      setLoading(false);
+  }
   
   return (
       <>
@@ -65,38 +116,17 @@ const RegisterPage = ({history}) => {
             Register Here
           </Typography>
           <form className={classes.form} noValidate>
-          <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="fname"
-              label="First Name"
-              name="fname"
-              autoComplete="First Name"
-              autoFocus
-            />
-             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="lname"
-              label="Last Name"
-              name="lname"
-              autoComplete="Last Name"
-              autoFocus
-            />
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              value={email}
+              // value={email}
               label="Email Address"
               name="email"
               autoComplete="email"
-              onChange={handleEmail}
+              ref={emailRef}
+              // onChange={handleEmail}
               autoFocus
             />
             <TextField
@@ -107,8 +137,9 @@ const RegisterPage = ({history}) => {
               name="password"
               label="Password"
               type="password"
-              value={password}
-              onChange={handlePassword}
+              ref={passwordRef}
+              // value={password}
+              // onChange={handlePassword}
               autoComplete="current-password"
             />
             <TextField
@@ -120,6 +151,9 @@ const RegisterPage = ({history}) => {
               label="Confirm Password"
               type="password"
               id="password"
+              ref={confirmPasswordRef}
+              //value={confirmPassword}
+              // onChange={handleConfirmPassword}
               autoComplete="current-password"
             />
             <FormControlLabel
@@ -127,12 +161,12 @@ const RegisterPage = ({history}) => {
               label="Remember me"
             />
             <Button
+              onClick={handleSignUp}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={handleSignUp}
             >
               Register!
             </Button>
@@ -151,5 +185,3 @@ const RegisterPage = ({history}) => {
     </>
   );
 }
-
-export default RegisterPage;

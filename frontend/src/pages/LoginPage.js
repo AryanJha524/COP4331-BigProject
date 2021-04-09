@@ -15,13 +15,14 @@ import RegisterPage from './RegisterPage';
 import { AppBar, Toolbar } from '@material-ui/core';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import loginStyle from './loginStyle';
-import history from './../history';
 import { AuthContext } from './../Auth.js';
+import { useHistory } from 'react-router-dom'
 
 // the login page
-const LoginPage = ({ history }) => {
+export default function LoginPage(){
   // login page styling
   const classes = loginStyle();
+  const history = useHistory();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,7 +45,7 @@ const LoginPage = ({ history }) => {
     try{
       await fire
       .auth()
-      .signInWithEmailAndPassword(email, password);
+      .signInWithEmailAndPassword(email.current.value, password.current.value);
       history.push("/dashboard");
     } catch (error) {
       alert(error);
@@ -93,7 +94,7 @@ const LoginPage = ({ history }) => {
               required
               fullWidth
               value={email}
-              onChange={handleEmail}
+              onChange={(email) => setEmail(email)}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -108,7 +109,7 @@ const LoginPage = ({ history }) => {
               label="Password"
               type="password"
               value={password}
-              onChange={handlePassword}
+              onChange={(password) => setPassword(password)}
               autoComplete="current-password"
             />
             <FormControlLabel
@@ -130,7 +131,7 @@ const LoginPage = ({ history }) => {
 
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={() => history.push('/forgot-password')}>
                   Forgot password?
                 </Link>
               </Grid>
@@ -147,6 +148,4 @@ const LoginPage = ({ history }) => {
     </Grid>
   );
 }
-
-export default LoginPage;
 

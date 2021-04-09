@@ -3,14 +3,12 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Paper, Badge, Button, CssBaseline, AppBar, Toolbar, IconButton, Typography, Grid } from '@material-ui/core';
 import AuthContext from './../Auth.js';
-import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import fire from '../fire.js';
-import Drawer from '@material-ui/core/Drawer';
-import CloseGarages from './../components/CloseGarages';
 import Reserve from './../components/Reserve';
 import GarageList from './../components/GarageList';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
+import UserInfo from '../components/UserInfo';
 
 const drawerWidth = 240;
 
@@ -136,10 +134,10 @@ export default function Dashboard(){
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
 
-            {/* closest garages */}
+            {/* user info */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <CloseGarages />
+                <UserInfo />
               </Paper>
             </Grid>
 

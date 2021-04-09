@@ -1,13 +1,14 @@
 import React, { useEffect, useState, Component } from 'react';
 import { AppBar, Toolbar, Button, Link, CssBaseline } from '@material-ui/core';
 import { Collapse} from '@material-ui/core';
-import history from './../history';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import homeStyle from './homeStyle';
+import { useHistory } from 'react-router-dom';
 
 export default function Home()
 {
     const classes = homeStyle();
+    const history = useHistory();
     const [checked, setChecked] = useState(false);
     useEffect(()=>{
         setChecked(true);
