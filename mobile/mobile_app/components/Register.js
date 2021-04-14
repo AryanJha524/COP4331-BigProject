@@ -31,7 +31,7 @@ export default function Register () {
         if (password !== password2) {
             console.log("Passwords don't match");
         }
-        else if (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+        else if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
             console.log("Password must be at least 8 characters long and contain an uppercase and lowercase character");
         }
         else {
