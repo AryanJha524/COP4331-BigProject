@@ -3,38 +3,39 @@ import {Avatar, Button, CssBaseline, TextField,
   FormControlLabel, Checkbox, Link, 
   Paper, Box, Grid, Typography, AppBar, Toolbar, Container
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab'
+import { withRouter } from 'react-router-dom';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import registerStyle from './registerStyle';
-import fire from '../fire.js';
-import history from './../history';
+import fire, { auth } from '../fire.js';
+//import history from './../history';
+import { useAuth } from './../Auth';
+import { useHistory } from 'react-router-dom';
 
 export default function RegisterPage(){
   const classes = registerStyle();
+  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
 
-  // const handleEmail = (event) => {
-  //   event.preventDefault();
-  //   setEmail(event.target.value);
+  // handleEmail: function(e){
+  //   this.setEmail({email: e.target.value});
   // }
   
-  // const handlePassword = (event) => {
-  //   event.preventDefault();
-  //   setPassword(event.target.value);
-  // }
+  const handlePassword = (password) => {
+    this.setPassword(password);
+  }
 
-  // const handleConfirmPassword = (event) => {
-  //   event.preventDefault();
-  //   setConfirmPassword(event.target.value);
-  // }
+  const handleConfirmPassword = (confirmPassword) => {
+    this.setConfirmPassword(confirmPassword);
+  }
   
   // function verifyEmail()
   // {
@@ -46,47 +47,25 @@ export default function RegisterPage(){
   //   });
   // }
 
-  // const handleSignUp = useCallback(async event =>{
-  //   event.preventDefault();
-
-  //   if (passwordRef.current.value != confirmPasswordRef.current.value)
-  //     return setError('Passwords do not match');
-
-  //   try {
-  //     setError('');
-  //     setLoading(true);
-  //     await fire
-  //       .auth()
-  //       .createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
-        
-  //       // const user = fire.auth().currentUser;
-  //       // await user.sendEmailVerification();
-         
-  //       history.push("/dashboard");
-  //   } catch{
-  //     setError('Failed to create Account');
-  //   }
-  //   setLoading(false);
-  // }, [history]);
-
-  async function handleSignUp(e)
+  function handleSignUp(e)
   {
     e.preventDefault();
+    console.log(email)
+    console.log(password)
 
-    if (passwordRef.current.value !== confirmPasswordRef.current.value)
+    if (password !== confirmPassword)
     {
-      return setError("Passwords do no match");
+      return setError("Passwords do not match");
     }
-
-    try {
-      setError("");
-      setLoading(true);
-      await fire.auth().createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
-      history.push("/dashboard");
-    } catch{
-      setError('Failed to create an account');
-    }
-      setLoading(false);
+    auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+    // Signed in 
+    var user = userCredential.user;
+    console.log(user)
+    history.push('/dashboard')
+  })
+  .catch((error) => console.log(error));
+  
   }
   
   return (
@@ -115,18 +94,19 @@ export default function RegisterPage(){
           <Typography component="h1" variant="h5">
             Register Here
           </Typography>
+          {error && <Alert variant="danger">{error}</Alert>}
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              // value={email}
+              value={email}
               label="Email Address"
               name="email"
               autoComplete="email"
-              ref={emailRef}
-              // onChange={handleEmail}
+              // ref={emailRef}
+              onChange={(e) => setEmail(e.target.value)}
               autoFocus
             />
             <TextField
@@ -137,9 +117,9 @@ export default function RegisterPage(){
               name="password"
               label="Password"
               type="password"
-              ref={passwordRef}
-              // value={password}
-              // onChange={handlePassword}
+              // ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
             <TextField
@@ -151,9 +131,9 @@ export default function RegisterPage(){
               label="Confirm Password"
               type="password"
               id="password"
-              ref={confirmPasswordRef}
-              //value={confirmPassword}
-              // onChange={handleConfirmPassword}
+              // ref={confirmPasswordRef}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="current-password"
             />
             <FormControlLabel
@@ -170,6 +150,15 @@ export default function RegisterPage(){
             >
               Register!
             </Button>
+            <Button
+              className={classes.submit}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+            >
+              Sign Up with Google
+            </Button>
             <Grid container>
               <Grid item>
                 <Link href="#" variant="body2" 
@@ -185,3 +174,5 @@ export default function RegisterPage(){
     </>
   );
 }
+
+//export default withRouter(RegisterPage);

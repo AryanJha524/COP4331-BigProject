@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import fire from './fire';
+import { auth } from './fire';
 // stores the user that is logged in 
 
 export const AuthContext = React.createContext();
@@ -9,17 +10,18 @@ export function useAuth(){
 }
 
 export const AuthProvider = ({ children }) => {
-    const[loggedInUser, setLoggedInUser] = useState('');
+    const[currentUser, setCurrentUser] = useState('');
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const unsub = fire.auth().onAuthStateChanged(user => {
-            setLoggedInUser(user)
+        const unsub = auth.onAuthStateChanged(user => {
+            setCurrentUser(user)
         })
         return unsub;
         }, []);
 
     return (
-        <AuthContext.Provider value={{loggedInUser}}>
+        <AuthContext.Provider value={{currentUser}}>
             {children}
         </AuthContext.Provider>
     );

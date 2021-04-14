@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Router, Switch, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -27,3 +27,15 @@ export default class Routes extends Component {
         )
     }
 }
+
+// export default function Routes()
+// {
+//   return (
+//     <Router>
+//       <Home path="/" />
+//       <LoginPage path="/login" />
+//       <RegisterPage path="/register" />
+//       <ForgotPassword path="/forgot-password" />
+//     </Router>
+//   );
+// }

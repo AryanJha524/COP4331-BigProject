@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,52 +15,57 @@ import RegisterPage from './RegisterPage';
 import { AppBar, Toolbar } from '@material-ui/core';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import loginStyle from './loginStyle';
-import { AuthContext } from './../Auth.js';
-import { useHistory } from 'react-router-dom'
+//import { AuthContext } from './../Auth.js';
+import { useHistory } from 'react-router-dom';
+import { auth } from './../fire';
 
 // the login page
 export default function LoginPage(){
   // login page styling
   const classes = loginStyle();
   const history = useHistory();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  //const history = useHistory();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [rememberme, setRememberMe] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleEmail = (event) => {
-    event.preventDefault();
-    setEmail(event.target.value);
+  const handleEmail = (email) => {
+    setEmail(email);
   }
   
-  const handlePassword = (event) => {
-    event.preventDefault();
-    setPassword(event.target.value);
+  const handlePassword = (password) => {
+    setPassword(password);
   }
-  
-  // does the logging in
-  const handleLogin = useCallback(async event => {
-    event.preventDefault();
-    // const {email, password} = event.target.elements;
-    try{
-      await fire
-      .auth()
-      .signInWithEmailAndPassword(email.current.value, password.current.value);
-      history.push("/dashboard");
-    } catch (error) {
-      alert(error);
+
+    // const { loggedInUser } = useContext(AuthContext);
+
+    // if (loggedInUser) {
+    //   return<Redirect to="/dashboard" />;
+    // }
+
+    const handleLogin = (e) =>
+    {
+      e.preventDefault();
+      console.log(email)
+      console.log(password)
+
+        setError("");
+        setLoading(true);
+        auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          var user = userCredential.user;
+          console.log(user)
+          history.push("/dashboard");
+        //   setError("Failed to login");
+        // setLoading(false);
+        })     
+      .catch((error) => console.log(error));
     }
-    }, [history]
-  );
-
-
-    const { loggedInUser } = useContext(AuthContext);
-
-    if (loggedInUser) {
-      return<Redirect to="/dashboard" />;
-    }
-
- 
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -93,8 +98,9 @@ export default function LoginPage(){
               margin="normal"
               required
               fullWidth
-              value={email}
-              onChange={(email) => setEmail(email)}
+              // value={email}
+              // ref={ emailRef }
+              onChange={(e) => setEmail(e.target.value)}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -108,8 +114,9 @@ export default function LoginPage(){
               name="password"
               label="Password"
               type="password"
-              value={password}
-              onChange={(password) => setPassword(password)}
+              // value={password}
+              // ref={ passwordRef }
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
             <FormControlLabel
