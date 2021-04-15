@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import Firebase from './config/firebase';
 import Register from './components/Register';
 import Login from './components/Login';
-
+import Homepage from './components/Homepage';
 
 export default function App() {
 
@@ -23,18 +23,14 @@ export default function App() {
   }, []);
 
 
-  const handlePress = () => {
-    Firebase.auth().signOut()
-  }
-
-
   return (
     <View style={styles.container}>
       {
+        // checks if user is logged in, if so, render homepage component
+        // else, ask user to register or login
         userLoggedIn
-        ? <Button
-            title="Logout"
-            onPress={handlePress}
+        ? <Homepage
+            user={Firebase.auth().currentUser}
           />
         : <Login/>
       }
