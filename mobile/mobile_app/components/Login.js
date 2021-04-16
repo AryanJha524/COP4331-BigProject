@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { Dimensions, StyleSheet, Text, SafeAreaView, Button, TextInput, Linking } from 'react-native';
 import Firebase from '../config/firebase';
-
+import ParkyHeader from './ParkyHeader';
 
 export default function Login() {
     
@@ -28,31 +28,47 @@ export default function Login() {
     };
 
     return (
-        <View>
-             <Text>Login Component</Text>
+        <SafeAreaView style={styles.container}>
+            <ParkyHeader/>
             <TextInput
                 style={styles.input}
+                textAlign="center"
                 placeholder="Enter your email"
                 onChangeText={handleEmail}
+                secureTextEntry={false}
+                keyboardAppearance = "dark"
             />
             <TextInput
                 style={styles.input}
+                textAlign="center"
                 placeholder="Enter your password"
+                keyboardAppearance = "dark"
                 secureTextEntry={true}
                 onChangeText={handlePassword}
             />
             <Button
-                title="Submit Form"
+                title="Login"
+                color = '#ebbd34'
                 onPress={handlePress}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     input: {
       height: 40,
+      width: 200,
       margin: 12,
       borderWidth: 1,
+      backgroundColor: 'white',
     },
+    container: {
+        flex: 1,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+      }
   });

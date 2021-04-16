@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+<<<<<<< HEAD
     "expo": "^41.0.0",
     "expo-status-bar": "~1.0.3",
     "firebase": "^7.24.0",
@@ -15,6 +16,16 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-web": "^0.15.7"
+=======
+    "@material-ui/core": "^4.11.3",
+    "expo": "~40.0.0",
+    "expo-status-bar": "~1.0.3",
+    "firebase": "7.9.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native-web": "~0.13.12"
+>>>>>>> e32933054999cb06e375977ba82d6e5977ea70e9
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

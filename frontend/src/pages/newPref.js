@@ -7,9 +7,11 @@ import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
      Checkbox, Link, Grid, Box, Typography, Container, FormControl, FormLabel, FormGroup, FormHelperText, InputLabel,
-     MenuItem, Select, AppBar, Toolbar, Switch, IconButton
+     MenuItem, Select, AppBar, Toolbar, Switch, IconButton, Menu,
     } from '@material-ui/core'
 import { useHistory } from 'react-router-dom';
+import { FormatListNumbered } from '@material-ui/icons';
+import Popup from './passwordPopup';
 
 
 
@@ -50,20 +52,40 @@ const useStyles = makeStyles((theme) => ({
   toolbarButtons: {
     marginLeft: 'auto',
   },
+  select: {
+    width:'100%',
+    maxWidth:600
+  },
 }));
 
 export default function SignIn() {
   const classes = useStyles();
 
-    const [state, setState] = React.useState({});
+    const [state, setState] = React.useState({
+      Monday: false,
+      Tuesday: false,
+      Wednesday: false,
+      Thursday: false,
+      Friday: false,
+      Saturday: false,
+      Sunday: false,
+    });
+
+    const options =[
+      {label: 'A', value: 'A'},
+      {label: 'B', value: 'B'},
+      {label: 'C', value: 'C'},
+      {label: 'D', value: 'D'},
+      {label: 'H', value: 'H'},
+      {label: 'I', value: 'I'},
+    ]
   
     const handleChange = (event) => {
       console.log("This day: " + event.target.name + " value is " + event.target.checked);
-      console.log("State: " + state.size)
+      console.log("State: " + state)
       if(event.target.checked === true)
       {
         //Save it to user and get garage & time
-        console.log(document.getElementById("MonGarage"));
       }
       else
       {
@@ -72,16 +94,29 @@ export default function SignIn() {
       setState({ ...state, [event.target.name]: event.target.checked });
     };
     const handleGarageChange = (event) => {
-      console.log("This Garage: " + event.target.value + " On this day " + event.target.day);
+      console.log("This Garage: " + event.target.value + " On this day " + event.target.id);
+      setValue(event.target.value);
     };
 
     const [garage, setGarage] = React.useState({});
+    const [value, setValue] = React.useState('');
+    const [monValue, setMonValue] = React.useState('');
+    const [tueValue, setTueValue] = React.useState('');
+    const [wedValue, setWedValue] = React.useState('');
+    const [thuValue, setThuValue] = React.useState('');
+    const [friValue, setFriValue] = React.useState('');
+    const [satValue, setSatValue] = React.useState('');
+    const [sunValue, setSunValue] = React.useState('');
 
     const [checked, setChecked] = React.useState(false);
 
-  const toggleChecked = () => {
-    setChecked((prev) => !prev);
-  };
+    const [notifChecked, setNotifChecked] = React.useState(() => initNotif());
+
+    const [password, setPassword] = React.useState(false);
+
+    function toggleChecked(){
+      setNotifChecked(!notifChecked);
+    };
   
   const history = useHistory();
 
@@ -94,11 +129,22 @@ export default function SignIn() {
     const { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday } = state;
     const { Sun, Mon, Tues, Wed, Thurs, Fri, Sat } = garage;
   
+    function initNotif()
+    {
+      console.log("initNotif");
+      return false;
+    }
 
 function GetTime(props) {
   const classes = useStyles();
   const isChecked = props.checked;
-  if(isChecked)
+  const [day, setDay] = React.useState(false);
+  // const { Sun, Mon, Tues, Wed, Thurs, Fri, Sat } = day;
+  
+  if(isChecked){
+    // setDay(prevDay => !prevDay);
+    console.log(day);
+  console.log("This is props.id: " + props.id);
     return(
       <Container>
       <form className={classes.container} noValidate>
@@ -117,31 +163,52 @@ function GetTime(props) {
           />
       </form>
       </Container>
-    );
+    );}
     else 
     return (<></>);
 }
+
+function getValue(day)
+{
+  switch(day) {
+    case Monday:
+      return monValue;
+    case Tuesday:
+      return tueValue;
+    case Wednesday:
+      return wedValue;
+    case Thursday:
+      return thuValue;
+    case Friday:
+      return friValue;
+    case Saturday:
+      return satValue;
+    case Sunday:
+      return sunValue;
+  }
+}
+
+
 function GetGarage(props)
 {
   const classes = useStyles();
   const isChecked = props.checked;
   
   if(isChecked){
+    console.log("This is propsday in gg: " + props.day);
     return(
       <Container>
-        <div>
       <FormControl key={props.id} variant="outlined" className={classes.ageFormControl}>
         <InputLabel id="Garage">Prefered Garage</InputLabel>
         <Select
           labelId="Garage"
           id={props.id}
           label="Prefered Garage"
-          defaultValue=""
+          value={value}
           onChange={handleGarageChange}
+          options={options}
         >
-          <MenuItem value=''>
-            <em>None</em>
-          </MenuItem>
+          <MenuItem value=''><em>None</em></MenuItem>
           <MenuItem value={'A'}>Garage A</MenuItem>
           <MenuItem value={'B'}>Garage B</MenuItem>
           <MenuItem value={'C'}>Garage C</MenuItem>
@@ -150,7 +217,6 @@ function GetGarage(props)
           <MenuItem value={'I'}>Garage I</MenuItem>
         </Select>
       </FormControl>
-    </div>
       </Container>
   );}
 
@@ -192,7 +258,7 @@ function GetGarage(props)
           <FormLabel component="legend">What days do you come to campus?</FormLabel>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={Monday} onChange={handleChange} name="Monday" />}
+              control={<Checkbox checked={state.Monday} onChange={handleChange} name="Monday" />}
               label="Monday"
             />
             <div>
@@ -201,16 +267,15 @@ function GetGarage(props)
             </div>
 
             <FormControlLabel
-              control={<Checkbox checked={Tuesday} onChange={handleChange} name="Tuesday" />}
+              control={<Checkbox checked={state.Tuesday} onChange={handleChange} name="Tuesday" />}
               label="Tuesday"
             />
             <div>
-            <GetTime id="TuesTime" checked={state.Tuesday}></GetTime>
-            <GetGarage id="TuesGarage" checked={state.Tuesday}></GetGarage>
+            <GetTime id="TuesTime" checked={state.Tuesday} day="Tuesday"></GetTime>
+            <GetGarage id="TuesGarage" checked={state.Tuesday} day="Tuesday"></GetGarage>
             </div>
-
             <FormControlLabel
-              control={<Checkbox checked={Wednesday} onChange={handleChange} name="Wednesday" />}
+              control={<Checkbox checked={state.Wednesday} onChange={handleChange} name="Wednesday" />}
               label="Wednesday"
             />
             <div>
@@ -219,7 +284,7 @@ function GetGarage(props)
             </div>
 
             <FormControlLabel
-              control={<Checkbox checked={Thursday} onChange={handleChange} name="Thursday" />}
+              control={<Checkbox checked={state.Thursday} onChange={handleChange} name="Thursday" />}
               label="Thursday"
             />
             <div>
@@ -228,7 +293,7 @@ function GetGarage(props)
             </div>
 
             <FormControlLabel
-              control={<Checkbox checked={Friday} onChange={handleChange} name="Friday" />}
+              control={<Checkbox checked={state.Friday} onChange={handleChange} name="Friday" />}
               label="Friday"
             />
             <div>
@@ -237,7 +302,7 @@ function GetGarage(props)
             </div>
 
             <FormControlLabel
-              control={<Checkbox checked={Saturday} onChange={handleChange} name="Saturday" />}
+              control={<Checkbox checked={state.Saturday} onChange={handleChange} name="Saturday" />}
               label="Saturday"
             />
             <div>
@@ -246,7 +311,7 @@ function GetGarage(props)
             </div>
 
             <FormControlLabel
-              control={<Checkbox checked={Sunday} onChange={handleChange} name="Sunday" />}
+              control={<Checkbox checked={state.Sunday} onChange={handleChange} name="Sunday" />}
               label="Sunday"
             />
             <div>
@@ -281,12 +346,46 @@ function GetGarage(props)
                   variant="contained"
                   color="primary"
                   className={classes.submit}
+                  onClick={() => setPassword(true)}
                 >
                   Change Password
           </Button>
         </Box>
+        
         </div>
       </Container>
+      
+      <Popup trigger={password} setTrigger={setPassword}>
+          <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="password"
+              label="New Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="password"
+              label="Confirm New Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Save
+            </Button>
+          </Popup>
     </Grid>
     <Grid item xs={4}>
       <Container>
@@ -297,7 +396,7 @@ function GetGarage(props)
         </Avatar>
         <Typography> Notifications </Typography>
         <FormGroup>
-          <FormControlLabel control={<Switch> color="primary" size="Normal" checked={checked} onChange={toggleChecked} </Switch>} label ="Push Notifications"/>
+          <FormControlLabel control={<Switch color="primary" size="Normal" checked={notifChecked} onChange={toggleChecked} />} label ="Push Notifications"/>
         </FormGroup>
         </Box>
         </div>
