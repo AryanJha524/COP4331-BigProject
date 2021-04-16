@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import Firebase from './config/firebase';
 import Register from './components/Register';
 import Login from './components/Login';
+import FindSpot from './components/FindSpot';
 
 
 export default function App() {
@@ -26,7 +27,6 @@ export default function App() {
   const handlePress = () => {
     Firebase.auth().signOut()
   }
-
 
   return (
     <View style={styles.container}>
