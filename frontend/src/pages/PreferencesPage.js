@@ -9,9 +9,84 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
      Checkbox, Link, Grid, Box, Typography, Container, FormControl, FormLabel, FormGroup, FormHelperText, InputLabel,
      MenuItem, Select, AppBar, Toolbar, Switch, IconButton
     } from '@material-ui/core'
-import { useHistory } from 'react-router-dom';
+import { CallMissedSharp } from '@material-ui/icons';
 
 
+// Username & password changes
+
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+function GetTime(props) {
+  const classes = useStyles();
+  const isChecked = props.checked;
+  if(isChecked)
+    return(
+      <Container>
+      <form className={classes.container} noValidate>
+        <TextField
+          id="time"
+          label="Select Time"
+          type="time"
+          defaultValue="09:00"
+          className={classes.TextField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{
+            step: 300,
+          }}
+          />
+      </form>
+      </Container>
+    );
+    else 
+    return (<></>);
+}
+function GetGarage(props)
+{
+  const classes = useStyles();
+  const isChecked = props.checked;
+  if(isChecked)
+    return(
+      <Container>
+        <div>
+      <FormControl variant="outlined" className={classes.ageFormControl}>
+        <InputLabel id="Garage">Prefered Garage</InputLabel>
+        <Select
+          labelId="Garage"
+          id="Garage-Selection"
+          label="Prefered Garage"
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Garage A</MenuItem>
+          <MenuItem value={20}>Garage B</MenuItem>
+          <MenuItem value={30}>Garage C</MenuItem>
+          <MenuItem value={40}>Garage D</MenuItem>
+          <MenuItem value={50}>Garage G</MenuItem>
+          <MenuItem value={60}>Garage H</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
+      </Container>
+  );
+
+  else
+      return (<></>);
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,108 +130,27 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
-    const [state, setState] = React.useState({});
+    const [state, setState] = React.useState({
+    });
   
     const handleChange = (event) => {
-      console.log("This day: " + event.target.name + " value is " + event.target.checked);
-      console.log("State: " + state.size)
-      if(event.target.checked === true)
-      {
-        //Save it to user and get garage & time
-        console.log(document.getElementById("MonGarage"));
-      }
-      else
-      {
-        //Save it to user
-      }
       setState({ ...state, [event.target.name]: event.target.checked });
     };
-    const handleGarageChange = (event) => {
-      console.log("This Garage: " + event.target.value + " On this day " + event.target.day);
+
+    const [age, setAge] = React.useState({});
+
+    const handleAgeChange = (event) => {
+      setAge(event.target.value);
     };
-
-    const [garage, setGarage] = React.useState({});
-
     const [checked, setChecked] = React.useState(false);
 
   const toggleChecked = () => {
     setChecked((prev) => !prev);
   };
   
-  const history = useHistory();
-
-  const routeChange = () =>{ 
-    let path = `/Home.js`; 
-    history.push(path);
-  }
-
-
     const { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday } = state;
-    const { Sun, Mon, Tues, Wed, Thurs, Fri, Sat } = garage;
+    const error = [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday].filter((v) => v).length !== 2;
   
-
-function GetTime(props) {
-  const classes = useStyles();
-  const isChecked = props.checked;
-  if(isChecked)
-    return(
-      <Container>
-      <form className={classes.container} noValidate>
-        <TextField
-          id={props.id}
-          label="Select Time"
-          type="time"
-          defaultValue="09:00"
-          className={classes.TextField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            step: 300,
-          }}
-          />
-      </form>
-      </Container>
-    );
-    else 
-    return (<></>);
-}
-function GetGarage(props)
-{
-  const classes = useStyles();
-  const isChecked = props.checked;
-  
-  if(isChecked){
-    return(
-      <Container>
-        <div>
-      <FormControl key={props.id} variant="outlined" className={classes.ageFormControl}>
-        <InputLabel id="Garage">Prefered Garage</InputLabel>
-        <Select
-          labelId="Garage"
-          id={props.id}
-          label="Prefered Garage"
-          defaultValue=""
-          onChange={handleGarageChange}
-        >
-          <MenuItem value=''>
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={'A'}>Garage A</MenuItem>
-          <MenuItem value={'B'}>Garage B</MenuItem>
-          <MenuItem value={'C'}>Garage C</MenuItem>
-          <MenuItem value={'D'}>Garage D</MenuItem>
-          <MenuItem value={'H'}>Garage H</MenuItem>
-          <MenuItem value={'I'}>Garage I</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-      </Container>
-  );}
-
-  else
-      return (<></>);
-}
 
   return (
     <>
@@ -169,7 +163,7 @@ function GetGarage(props)
             Account Preferences
           </Typography>
           <div className={classes.toolbarButtons}>
-          <IconButton color="inherit" onClick={routeChange}>
+          <IconButton color="inherit">
             <HomeIcon/>
           </IconButton>
           </div>          
@@ -196,8 +190,8 @@ function GetGarage(props)
               label="Monday"
             />
             <div>
-            <GetTime id="MonTime" checked={state.Monday} day="Monday"></GetTime>
-            <GetGarage id="MonGarage" checked={state.Monday} day="Monday"></GetGarage>
+            <GetTime id="MonTime" checked={state.Monday}></GetTime>
+            <GetGarage id="MonGarage" checked={state.Monday}></GetGarage>
             </div>
 
             <FormControlLabel
