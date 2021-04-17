@@ -1,33 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
-import Home from './pages/Home';
+import React, { useEffect, useState, Component } from 'react';
+import Home from './pages/Home'; 
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage'
-import PreferencesPage from './pages/PreferencesPage'
+import fire from './fire.js';
+import RegisterPage from './pages/RegisterPage';
+import Routes from './Routes';
+import Dashboard from './pages/Dashboard';
+import withFirebaseAuth from 'react-with-firebase-auth'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { AuthProvider } from './Auth';
+import PrivateRoute from './PrivateRoute';
+import ForgotPassword from './pages/ForgotPassword';
 
-function App() {
+export default function App(){
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-    //<Home />
-    // <LoginPage />
-    // <RegisterPage />
-    <PreferencesPage/>
-  );
+    <div className="app">
+      <Routes />
+    </div>
+  )
 }
-
-export default App;
