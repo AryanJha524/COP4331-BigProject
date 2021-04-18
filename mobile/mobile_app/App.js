@@ -5,6 +5,7 @@ import Firebase from './config/firebase';
 import Register from './components/Register';
 import Login from './components/Login';
 import Homepage from './components/Homepage';
+import FindSpot from './components/FindSpot';
 
 export default function App() {
 
@@ -45,5 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 25
   },
 });
