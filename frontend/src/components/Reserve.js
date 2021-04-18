@@ -1,6 +1,6 @@
 import { Link, Typography } from '@material-ui/core';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 
 export default function Reserve()
@@ -21,3 +21,4 @@ export default function Reserve()
         </React.Fragment>
     )
 }
+// export default withRouter(Reserve);

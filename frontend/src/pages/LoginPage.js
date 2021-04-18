@@ -42,12 +42,6 @@ export default function LoginPage(){
     setPassword(password);
   }
 
-    // const { loggedInUser } = useContext(AuthContext);
-
-    // if (loggedInUser) {
-    //   return<Redirect to="/dashboard" />;
-    // }
-
     const handleLogin = (e) =>
     {
       e.preventDefault();
@@ -61,8 +55,8 @@ export default function LoginPage(){
           var user = userCredential.user;
           console.log(user)
           history.push("/dashboard");
-        //   setError("Failed to login");
-        // setLoading(false);
+          setError("Failed to login");
+        setLoading(false);
         })     
       .catch((error) => console.log(error));
     }
@@ -98,8 +92,6 @@ export default function LoginPage(){
               margin="normal"
               required
               fullWidth
-              // value={email}
-              // ref={ emailRef }
               onChange={(e) => setEmail(e.target.value)}
               label="Email Address"
               name="email"
@@ -114,8 +106,6 @@ export default function LoginPage(){
               name="password"
               label="Password"
               type="password"
-              // value={password}
-              // ref={ passwordRef }
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
@@ -134,6 +124,16 @@ export default function LoginPage(){
             >
               Log In
             </Button>
+            {/* <Button
+              className={classes.submit}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={signInWithGoogle}
+            >
+              Sign In with Google
+            </Button> */}
   
 
             <Grid container>

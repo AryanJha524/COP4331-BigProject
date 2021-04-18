@@ -1,4 +1,3 @@
-
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -8,8 +7,8 @@ const useStyles = makeStyles((theme) => ({
           height: '100vh',
         },
         image: {
-        //   backgroundImage: "url(../images/carLoginPic.jpg)",
-        backgroundImage:"url(https://source.unsplash.com/random)",
+          backgroundImage: "url(../images/carLoginPic.jpg)",
+        // backgroundImage:"url(https://source.unsplash.com/random)",
           // backgroundRepeat: 'no-repeat',
           backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -35,6 +34,29 @@ const useStyles = makeStyles((theme) => ({
         },
         icon: {
             marginRight: '20px'
+        },
+        popup: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 100,
+          height: 100,
+          
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        popupInner: {
+          position: 'relative',
+          padding: 32,
+          width: 100,
+          maxWidth: 640,
+
+        },
+        popupInnerCloseBtn: {
+          position: 'absolute',
+          top: 16,
+          right: 16,
         },
       }));
       

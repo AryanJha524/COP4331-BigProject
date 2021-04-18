@@ -11,7 +11,7 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
     } from '@material-ui/core'
 import { useHistory } from 'react-router-dom';
 import { FormatListNumbered } from '@material-ui/icons';
-import Popup from './passwordPopup';
+import Popup from '../components/passwordPopup';
 
 
 
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function NewPref() {
   const classes = useStyles();
 
     const [state, setState] = React.useState({

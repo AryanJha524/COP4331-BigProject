@@ -7,7 +7,7 @@ import { Alert } from '@material-ui/lab'
 import { withRouter } from 'react-router-dom';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import registerStyle from './registerStyle';
-import fire, { auth } from '../fire.js';
+import { auth, signInWithGoogle } from '../fire.js';
 //import history from './../history';
 import { useAuth } from './../Auth';
 import { useHistory } from 'react-router-dom';
@@ -65,7 +65,6 @@ export default function RegisterPage(){
     history.push('/dashboard')
   })
   .catch((error) => console.log(error));
-  
   }
   
   return (
@@ -115,7 +114,7 @@ export default function RegisterPage(){
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Password (At least 6 characters)"
               type="password"
               // ref={passwordRef}
               value={password}
@@ -156,8 +155,9 @@ export default function RegisterPage(){
               fullWidth
               variant="contained"
               color="secondary"
+              //onClick={signInWithGoogle}
             >
-              Sign Up with Google
+              Sign In with Google
             </Button>
             <Grid container>
               <Grid item>
