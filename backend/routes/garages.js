@@ -68,7 +68,6 @@ router.post('/parkSpot', (req, res) => {
 })
 
 // leaveSpot api
-// isPark api 
 router.post('/leaveSpot', (req, res) => {
     Garage.findOne({
         name: req.body.garageName
@@ -126,7 +125,11 @@ router.get('/openSpots', (req, res) => {
                     openSpots++;
                 }
             }
-            return res.status(200).json({numOpenSpots: openSpots});
+            var jsonGarage = {
+                numOpenSpots: openSpots,
+                garageSpots: spotsArray
+            };
+            return res.status(200).json(jsonGarage);
         }
         else {
             return res.status(200).json({err: "No garage found"});
