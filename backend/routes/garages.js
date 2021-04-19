@@ -113,7 +113,7 @@ router.get('/findSpot', (req, res) => {
 });
 
 // openSpots api
-router.get('/openSpots', (req, res) => {
+router.post('/openSpots', (req, res) => {
     const garageName = req.body.garageName;
     Garage.findOne({name: garageName})
     .then(garage => {
