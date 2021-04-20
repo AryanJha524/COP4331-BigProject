@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/co
 
 function createData(id, name, freeSpots)
 {
-    return { id, name, freeSpots };
+    return {id, name, freeSpots };
 }
 
 const parkingGarages = [
