@@ -21,12 +21,7 @@ export default function ParkUser() {
     }
 
     const handleSpot = (spot) => {
-        if (spot < 0) {
-            console.log("error, invalid spot number")
-        }
-        else {
-            setSpot(spot);    
-        }
+        setSpot(spot);            
     }
 
     const parkUser = (garageName, spotNumber) => {
@@ -52,23 +47,35 @@ export default function ParkUser() {
         })
         .catch(err => {console.log(err)}); // ADD AN ERROR ALERT HERE 
         */
+    
         setParkStatus(true);
-        Alert.alert(
-            "You've been parked!",
-            "",
-            [
-                {
-                    text: "Dismiss",
-                    style: "cancel"
-                }
-            ]
-        )
-        
     }
 
     const handlePress = () => {
-        if (garageName == null || spotNumber < 0) {
+        if (garageName === null) {
+            Alert.alert(
+                "Invalid garage name!",
+                "Please enter a valid garage",
+                [
+                    {
+                        text: "Dismiss",
+                        style: "cancel"
+                    }
+                ]
+            )
+        }
+        else if (spotNumber <= 0) {
             console.log("error, garagename and spotnumber are required!")
+            Alert.alert(
+                "Invalid spot number!",
+                "Please enter a valid spot",
+                [
+                    {
+                        text: "Dismiss",
+                        style: "cancel"
+                    }
+                ]
+            )
         }
         else {
             parkUser(garageName, spotNumber);
@@ -99,51 +106,62 @@ export default function ParkUser() {
 
     }
     
-    let text2 = " spot: " + spotNumber;
+    let text2 = " Spot: " + spotNumber;
 
     return (
         <SafeAreaView style={styles.container}>
             <ParkyHeader/>
+            <SafeAreaView style={styles.container}>
             {
                 isParked 
                 ?
                 <SafeAreaView style={styles.container}>
-                    <Text style = {styles.text}>
-                        {garageName}
-                    </Text>
-                    <Text style = {styles.text}>
-                        {text2}
-                    </Text>
+                    <SafeAreaView style={styles.container}>
+                        <Text style = {styles.text}>
+                            {garageName}
+                        </Text>
+                        <Text style = {styles.text}>
+                            {text2}
+                        </Text>
+                    </SafeAreaView>
                     <Button
                     title="Leave spot"
                     onPress={handleLeave}
                     />
                 </SafeAreaView>
                 :
-                <SafeAreaView>
-                    <TextInput
-                        style={styles.input}
-                        textAlign="center"
-                        placeholder="Enter the garage name"
-                        onChangeText={handleGarage}
-                        secureTextEntry={false}
-                        keyboardAppearance = "dark"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        textAlign="center"
-                        placeholder="Enter your spot number"
-                        keyboardAppearance = "dark"
-                        secureTextEntry={false}
-                        onChangeText={handleSpot}
-                    />
+                <SafeAreaView style={styles.container}>
+                    <SafeAreaView style={styles.container}>
+                        <TextInput
+                            style={styles.input}
+                            textAlign="center"
+                            placeholder="Enter the garage name"
+                            onChangeText={handleGarage}
+                            secureTextEntry={false}
+                            keyboardAppearance = "dark"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            textAlign="center"
+                            placeholder="Enter your spot number"
+                            keyboardAppearance = "dark"
+                            secureTextEntry={false}
+                            onChangeText={handleSpot}
+                        />
+                        <Button
+                            title="Park Me"
+                            color = '#ebbd34'
+                            onPress={handlePress}
+                        />
+                    </SafeAreaView>
                     <Button
-                        title="Park Me"
+                        title="Return to home"
                         color = '#ebbd34'
-                        onPress={handlePress}
+                        onPress={() => history.push('/')}
                     />
                 </SafeAreaView>
             }
+            </SafeAreaView>
         </SafeAreaView>
     )
 }

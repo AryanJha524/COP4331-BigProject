@@ -2,8 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Firebase from '../config/firebase';
+import { useHistory } from "react-router-dom";
 
 export default function Register () {
+    let history = useHistory();
+
     const [isLoading, setIsLoading] = useState(true);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -62,6 +65,10 @@ export default function Register () {
             <Button
                 title="Submit Form"
                 onPress={handlePress}
+            />
+            <Button
+                title="Homepage"
+                onPress={() => history.push("/login")}
             />
         </View>
        

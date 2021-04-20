@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, FlatList, Text, View, Button} from 'react-native';
-import ParkyHeader from './components/ParkyHeader';
+import { StyleSheet, SafeAreaView, FlatList, Text, View, Button, Dimensions} from 'react-native';
+import ParkyHeader from './ParkyHeader'
+import { useHistory } from "react-router-dom";
+
+
+// page 6
 
 const spots = [
   
@@ -13,6 +17,9 @@ const Item = ({ title }) => (
 
 
 export default function SpotClaim() {
+
+  let history = useHistory();
+
   const[selectedSpot, setSelectedSpot] = useState("")
 
   var spotNo;
@@ -27,39 +34,44 @@ export default function SpotClaim() {
       <View style = {styles.header}>
         <ParkyHeader />
       </View>
-      <Text style={styles.textStyle}> Garage X </Text>  
+      <Text style={styles.text}> Garage X </Text>  
       <FlatList
         data = {spots}
         renderItem={renderItem}
         keyExtractor={item => item.key}
+      />
+      <Button
+        title="Return to home"
+        color = '#ebbd34'
+        onPress={() => history.push("/")}
       />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    width: 200,
+    margin: 12,
+    borderWidth: 1,
+    backgroundColor: 'white',
+  },
   container: {
-    flex: 1,
-    paddingTop: 40,
-    alignItems: "center",
-    backgroundColor:"black"
-  },
-  textStyle: {
-    alignItems: "center",
-    color: "white",
-    fontSize: 25,
-    height: 120,
-    paddingTop: 40
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 60,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  }, 
-  header: {
-    paddingTop: 30
+      flex: 1,
+      backgroundColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: Dimensions.get('window').height,
+      width: Dimensions.get('window').width,
+    },
+  text: {
+      color: "white",
+      fontSize: 25,
+      justifyContent: "center",
+      alignItems: 'center',
+      marginTop: 50,
+      marginBottom: 50,
+      textAlign:"center"
   }
 });

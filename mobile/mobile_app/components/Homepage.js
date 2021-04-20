@@ -12,12 +12,6 @@ import { useHistory } from "react-router-dom";
 export default function Homepage () {
     let history = useHistory();
     const [userParked, setUserParked] = useState(false);
-    
-
-    const handlePressFind = () => {
-        console.log("Find me a spot");
-    }
-
 
     // signOut function
     const handlePress = () => {
@@ -27,9 +21,10 @@ export default function Homepage () {
     return (
         <SafeAreaView style={styles.container}>
             <ParkyHeader/>
+            <SafeAreaView style={styles.container}>
             <Button
                 title="Find Me a Spot"
-                onPress={handlePressFind}
+                onPress={() => history.push("/findspot")}
                 style = {styles.button}
             />
             <Button
@@ -37,6 +32,7 @@ export default function Homepage () {
                 onPress={() => history.push("/parkuser")}
                 style = {styles.button}
             />
+            </SafeAreaView>
             <Button
                 title="Logout"
                 onPress={handlePress}
