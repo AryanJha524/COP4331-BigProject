@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // importing routers 
 const garageRouter = require('../backend/routes/garages');
 const userRouter = require('../backend/routes/users');
 
 const app = express();
+app.use(cors());
 
 // allows us to parse incoming body requests 
 app.use(
