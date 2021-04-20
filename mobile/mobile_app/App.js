@@ -5,9 +5,12 @@ import Firebase from './config/firebase';
 import Register from './components/Register';
 import Login from './components/Login';
 import Homepage from './components/Homepage';
+import ParkUser from './components/ParkUser';
+import { NativeRouter, Route } from "react-router-native";
+import { useHistory } from "react-router-dom";
 
 export default function App() {
-
+  let history = useHistory();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,26 +19,36 @@ export default function App() {
   useEffect(() => {
     const authListener = Firebase.auth().onAuthStateChanged((user) => {
       setUserLoggedIn(user ? true : false);
-      setIsLoading(false);
-      setUserProfile(user);
     });
     return authListener;
   }, []);
 
 
   return (
-    <View style={styles.container}>
-      {
-        // checks if user is logged in, if so, render homepage component
-        // else, ask user to register or login
-        userLoggedIn
-        ? <Homepage
-            user={Firebase.auth().currentUser}
-          />
-        : <Login/>
-      }
-      <StatusBar style="auto" />
-    </View>
+    <NativeRouter>
+      <View style={styles.container}>
+        {
+          // checks if user is logged in, if so, render homepage component
+          // else, ask user to register or login
+          userLoggedIn
+          ?
+            <View style = {styles.container}>
+                <Route exact path = "/">
+                  <Homepage user={Firebase.auth().currentUser}/>
+                </Route>
+                <Route exact path = "/parkuser">
+                  <ParkUser/>
+                </Route>
+            </View>
+          : 
+            <View style = {styles.container}>
+              <Login/>
+            </View>
+        }
+        <StatusBar style="auto" />
+      </View>
+    </NativeRouter>
+    
   );
 }
 

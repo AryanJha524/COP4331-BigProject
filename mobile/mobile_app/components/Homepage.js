@@ -1,27 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import { Dimensions, StyleSheet, Text, SafeAreaView, Button, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, SafeAreaView, Button, ScrollView } from 'react-native';
 import Firebase from '../config/firebase';
-import { FontAwesome5 } from '@expo/vector-icons'; 
 import ParkyHeader from './ParkyHeader';
+import { useHistory } from "react-router-dom";
 
 
-export default function Homepage (props) {
 
+// page 1
+// might have to add a navigator to this 
+
+export default function Homepage () {
+    let history = useHistory();
     const [userParked, setUserParked] = useState(false);
     
-    // function to handle finding spot
+
     const handlePressFind = () => {
         console.log("Find me a spot");
     }
 
-    // function to handle finding spot
-    const handlePressPark = () => {
-        console.log("Park me");
-    }
 
     // signOut function
     const handlePress = () => {
-        console.log('signing out: ' + props.user);
         Firebase.auth().signOut()
     }
 
@@ -35,7 +34,7 @@ export default function Homepage (props) {
             />
             <Button
                 title="Park Me"
-                onPress={handlePressPark}
+                onPress={() => history.push("/parkuser")}
                 style = {styles.button}
             />
             <Button
