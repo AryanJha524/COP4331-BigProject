@@ -15,9 +15,6 @@ import { useHistory } from 'react-router-dom';
 export default function RegisterPage(){
   const classes = registerStyle();
   const history = useHistory();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
@@ -29,19 +26,19 @@ export default function RegisterPage(){
   //   this.setEmail({email: e.target.value});
   // }
   
-  const handlePassword = (password) => {
-    this.setPassword(password);
-  }
+  // const handlePassword = (password) => {
+  //   this.setPassword(password);
+  // }
 
-  const handleConfirmPassword = (confirmPassword) => {
-    this.setConfirmPassword(confirmPassword);
-  }
+  // const handleConfirmPassword = (confirmPassword) => {
+  //   this.setConfirmPassword(confirmPassword);
+  // }
   
-  // function verifyEmail()
+  // function verifyEmail(email)
   // {
-  //   var user = fire.auth().currentUser;
+  //   var user = auth.currentUser()
   //   user.sendEmailVerification().then(function() {
-  //       window.alert("email verification sent");
+  //       window.alert("email verification sent to " + email);
   //   }).catch(function(error){
 
   //   });
@@ -61,26 +58,29 @@ export default function RegisterPage(){
     .then((userCredential) => {
     // Signed in 
     var user = userCredential.user;
+    user.sendEmailVerification();
+    alert("email sent to " + email + " check junk folder.")
     console.log(user)
     history.push('/dashboard')
   })
   .catch((error) => console.log(error));
   }
-  
+
   return (
       <>
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <AppBar className={classes.appbar} position="absolute" variant="regular">
-            <Toolbar>
-                <DriveEtaIcon className={classes.icon}/>
-                <Typography variant="h6">
-                    Parky Registration
-                </Typography>
-                <Button className={classes.homeButton} onClick={() => history.push('/')} color="inherit">
+      <AppBar className={classes.appbar} elevation={0}>
+      <Toolbar>
+          <Typography className={classes.appbarTitle} variant="h6">
+            Parky
+            <DriveEtaIcon className={classes.icon}/>
+            <span margin='auto'>Register</span>
+          </Typography>
+          <Button className={classes.homeButton} onClick={() => history.push('/')} color="inherit">
           {"Home"}
           </Button>
-            </Toolbar>
+        </Toolbar>
         </AppBar>
       <Grid item xs={false} sm={4} md={7} className={classes.image}>
         <Typography align ="center" component="h1" variant="h1">

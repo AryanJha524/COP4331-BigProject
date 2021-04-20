@@ -6,7 +6,7 @@ router.post('/createGarage', (req, res) => {
     const newGarage = new Garage({
         name: req.body.garageName,
         numberSpots: req.body.numberSpots,
-        Geometry: req.body.GeoGarage,
+        location: req.body.location,
         spotsArray: req.body.spotsArray
     });
     newGarage
@@ -67,30 +67,75 @@ router.post('/parkSpot', (req, res) => {
     })
 })
 
-// isFindSpot api
-router.post('/isFindSpot', (req, res) => {
+// leaveSpot api
+router.post('/leaveSpot', (req, res) => {
+    Garage.findOne({
+        name: req.body.garageName
+    })
+    .then(garage => {
+        if (garage) {
+            // update provided level and spot number in this garage's array
+            var spotNumber = req.body.spotNumber;
 
-    // find closest garage that isn't full
-    // go through garage array, return object of first one that isnt full (call separate api)
-
-    // go through all garages, call api to compare distances
-    // order garages array by closest distance
-    Garage.find(
-        {
-          location:
-            {
-                $near :
-               {
-                   $geometry: 
-                   {
-                       type: "Point",  
-                       coordinates: [req.body.lng,req.body.lat]
-                    },
-                    $maxDistance: 100000
-               }
-            }
+            if (spotNumber <= 0) {
+                return res.status(200).json({err: "Invalid spot"});
+            }    
+            garage.spotsArray[spotNumber - 1].isOpen = true;
+            garage.save()
+            .then(garage => res.status(200).json({success: "Spot opened!"}))
+            .catch(err => res.status(200).json(err));                
+            
         }
-     ).then(garage => res.status(200).json(garage))
-      .catch(err => res.status(200).json(err));
+        else {
+            return res.status(200).json({err: "No garage found"});
+        }
+    })
+})
+
+// findSpot api
+router.get('/findSpot', (req, res) => {
+    const long=req.body.lng;
+    const lat=req.body.lat;
+    Garage.find({location:{         
+            $near: {
+                $geometry: {
+                        type: "Point",
+                        coordinates: [long, lat]}             
+                    }
+                }}, function (error, result){          
+                    if (error) {
+                        res.status(200).json(error)
+                    }
+                    else {
+                        res.status(200).json(result);
+                    }
+                });
 });
+
+// openSpots api
+router.post('/openSpots', (req, res) => {
+    const garageName = req.body.garageName;
+    Garage.findOne({name: garageName})
+    .then(garage => {
+        if (garage) {
+            openSpots = 0;
+            var spotsArray = garage.spotsArray;
+            for (i = 0; i < spotsArray.length; i++) {
+                if (spotsArray[i].isOpen === true) {
+                    openSpots++;
+                }
+            }
+            var jsonGarage = {
+                numOpenSpots: openSpots,
+                garageSpots: spotsArray
+            };
+            return res.status(200).json(jsonGarage);
+        }
+        else {
+            return res.status(200).json({err: "No garage found"});
+        }
+    })
+    .catch(err => res.status(200).json(err))
+})
+
 module.exports = router;
