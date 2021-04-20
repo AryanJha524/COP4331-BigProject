@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
         height: '40px',
         left: '-15.91%',
         right: '22.73%',
-        top: calc(50 % - 40px / 2 + 703px),
+        top: 'calc(50 % - 40px / 2 + 703px)',
 
         background: '#E4EEED',
         boxShadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2),
         borderRadius: '28px',
-        transform: matrix(1, 0, 0, -1, 0, 0),
+        transform: matrix'(1, 0, 0, -1, 0, 0)',
     },
 
     Elevation2: {
@@ -116,10 +116,10 @@ const styles = StyleSheet.create({
         height: '40px',
         left: '-15.91%',
         right: '22.73%',
-        top: calc(50 % - 40px / 2 + 100px),
+        top: calc'(50 % - 40px / 2 + 100px)',
 
         background: '#E4EEED',
-        boxShadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2),
+        boxShadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px 'rgba(0, 0, 0, 0.12)', 0px 2px 4px rgba(0, 0, 0, 0.2),
         borderRadius: '28px',
     },
 
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         height: '40px',
         left: '-15.91%',
         right: '22.73%',
-        top: calc(50 % - 40px / 2 + 20px),
+        top: calc'(50 % - 40px / 2 + 20px)',
 
         background: '#E4EEED',
         boxShadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2),
