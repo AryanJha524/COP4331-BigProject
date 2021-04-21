@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, Alert, SafeAreaView, Button, TextInput, Text} f
 import Firebase from '../config/firebase';
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
+import GarageList from './GarageList';
 const axios = require('axios');
 
 import geolocationkey from '../config/geokey';
@@ -15,6 +16,9 @@ export default function FindSpot () {
     
     let history = useHistory();
     const [address, setAddress] = useState(null);
+    const [haveLocation, setLocation] = useState(false);
+    const [lat, setLatitude] = useState(null);
+    const [long, setLongitude] = useState(null);
 
 
     const handleAddress = (address) => {
@@ -45,15 +49,7 @@ export default function FindSpot () {
             axios.get(url, {params})
             .then(response => {
                 console.log(response.data);
-                // change to garage list screen and pass latitude and longitude as props 
-                /*history.push({
-                    pathname: "/garagelist",
-                    state: {
-                        long: response.data.longitude,
-                        lat: response.data.latitude
-                    }
-                });
-                */
+                // setLocation(true);
               }).catch(error => {
                 console.log(error);
               });
@@ -77,27 +73,23 @@ export default function FindSpot () {
 
         let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.BestForNavigation});
         const { latitude , longitude } = location.coords;
-        
-        console.log(latitude);
-        console.log(longitude);
-        // call our own api with the latitude and longitude
-        // push to garageList with props of array of garages 
-        
-        /*history.push({
-            pathname: "/garagelist",
-            state: {
-                long: longitude,
-                lat: latitude
-            }
-        });
-        */
+        setLatitude(latitude)
+        setLongitude(longitude);
+        setLocation(true);
     }
-
     return (
         <SafeAreaView style={styles.container}>
             <ParkyHeader/>
             <SafeAreaView style={styles.container}>
-                <SafeAreaView>
+                {
+                    haveLocation
+                    ?
+                    <GarageList 
+                        latitude={lat}
+                        longitude={long}
+                    />
+                    :
+                    <SafeAreaView>
                     <TextInput
                         style={styles.input}
                         textAlign="center"
@@ -120,6 +112,7 @@ export default function FindSpot () {
                         onPress={handlePressLocation}
                     />
                 </SafeAreaView>
+                }
             </SafeAreaView>
         </SafeAreaView>
     )

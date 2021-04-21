@@ -5,14 +5,16 @@ import { useHistory } from "react-router-dom";
 
 // page 5 
 
-export default function GarageList () {
+const GarageList = ({latitude, longitude}) => {
   let history = useHistory();
   const [selectedValue, setSelectedValue] = useState("java");
   
+  console.log(latitude);
+  
+  console.log(longitude);
   
   return (
     <SafeAreaView style={styles.container}>
-      <ParkyHeader/>
       <SafeAreaView style={styles.container}>
         <Button
           title = "Go to spot claim page"
@@ -54,3 +56,5 @@ const styles = StyleSheet.create({
       textAlign:"center"
   }
 });
+
+export default GarageList;
