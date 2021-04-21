@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Dimensions, StyleSheet, Text, SafeAreaView, Button, TextInput, Alert } from 'react-native';
+import { Dimensions, StyleSheet, Text, SafeAreaView, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import Firebase from '../config/firebase';
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
@@ -8,24 +8,13 @@ import { useHistory } from "react-router-dom";
 
 export default function Login() {
     let history = useHistory();
-    const [isLoading, setIsLoading] = useState(true);
+    const [passwordRecovery, setPasswordRecovery] = useState(false);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
     const doLogin = (email, password) => {
-        setIsLoading(true);
         Firebase.auth().signInWithEmailAndPassword(email, password)
         .catch((err) => console.log(err));
-        Alert.alert(
-            "You've been logged in",
-            ""
-            [
-                {
-                    text: "Dismiss",
-                    style: "cancel"
-                }
-            ]
-        )
     };
 
     const handleEmail = (email) => {
@@ -40,32 +29,63 @@ export default function Login() {
         doLogin(email, password);
     };
 
+    const handlePasswordRecovery = () => {
+        Firebase.auth().sendPasswordResetEmail(email);
+        setPasswordRecovery(false);
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ParkyHeader/>
-            <SafeAreaView style={styles.container}>
-                <TextInput
+            {
+                passwordRecovery
+                ?
+                <SafeAreaView style={styles.container}>
+                    <TextInput
                     style={styles.input}
                     textAlign="center"
-                    placeholder="Enter your email"
+                    placeholder="Enter the email you used to sign up for an account"
                     onChangeText={handleEmail}
                     secureTextEntry={false}
                     keyboardAppearance = "dark"
-                />
-                <TextInput
-                    style={styles.input}
-                    textAlign="center"
-                    placeholder="Enter your password"
-                    keyboardAppearance = "dark"
-                    secureTextEntry={true}
-                    onChangeText={handlePassword}
-                />
-                <Button
-                    title="Login"
-                    color = '#ebbd34'
-                    onPress={handlePress}
-                />    
+                    />
+                    <Button
+                        title="Send recovery email"
+                        color = '#ebbd34'
+                        onPress={handlePasswordRecovery}
+                    />
+                </SafeAreaView>
+                :
+                <SafeAreaView style={styles.container}>
+                    <TextInput
+                        style={styles.input}
+                        textAlign="center"
+                        placeholder="Enter your email"
+                        onChangeText={handleEmail}
+                        secureTextEntry={false}
+                        keyboardAppearance = "dark"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        textAlign="center"
+                        placeholder="Enter your password"
+                        keyboardAppearance = "dark"
+                        secureTextEntry={true}
+                        onChangeText={handlePassword}
+                    />
+                    <Button
+                        title="Login"
+                        color = '#ebbd34'
+                        onPress={handlePress}
+                    />
+                    <TouchableOpacity onPress={() => setPasswordRecovery(true)}>
+                    <Text style={{color: "red"}}>
+                        Forgot your password? Click here
+                    </Text>     
+                    </TouchableOpacity>
             </SafeAreaView>
+            }
+            
             <Button
                     title="Don't have an account? Register here"
                     color = '#ebbd34'
@@ -90,5 +110,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-      }
+      },
+    text: {
+        color: 'white',
+        fontSize: 16
+    }
   });
