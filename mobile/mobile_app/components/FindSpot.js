@@ -3,6 +3,9 @@ import { Dimensions, StyleSheet, Alert, SafeAreaView, Button, TextInput, Text} f
 import Firebase from '../config/firebase';
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
+const axios = require('axios');
+
+import geolocationkey from '../config/geokey';
 
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -12,16 +15,49 @@ export default function FindSpot () {
     
     let history = useHistory();
     const [address, setAddress] = useState(null);
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
 
 
     const handleAddress = (address) => {
         setAddress(address)
     }
 
-    const handlePressAddress = () => {
-        console.log("Handling address");
+    const handlePressAddress = async () => {
+        if (address === "" || address === null) {
+            Alert.alert(
+                "Invalid address",
+                "Please try again or use your location",
+                [
+                    {
+                        text: "Dismiss",
+                        style: "cancel"
+                    }
+                ]
+            )
+        }
+        else {
+            console.log(address);
+            var url = 'http://api.positionstack.com/v1/forward';
+            var params = {
+                access_key: '440ef24516cb0d4d2bb1312b106d7314',
+                query: address
+            }
+            // call geolocation api with address
+            axios.get(url, {params})
+            .then(response => {
+                console.log(response.data);
+                // change to garage list screen and pass latitude and longitude as props 
+                /*history.push({
+                    pathname: "/garagelist",
+                    state: {
+                        long: response.data.longitude,
+                        lat: response.data.latitude
+                    }
+                });
+                */
+              }).catch(error => {
+                console.log(error);
+              });
+        }
     }
 
     const handlePressLocation = async () => {
@@ -41,8 +77,6 @@ export default function FindSpot () {
 
         let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.BestForNavigation});
         const { latitude , longitude } = location.coords;
-        setLongitude(longitude);
-        setLatitude(latitude);
         
         console.log(latitude);
         console.log(longitude);
