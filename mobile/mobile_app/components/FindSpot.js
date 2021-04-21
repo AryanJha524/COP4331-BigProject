@@ -38,7 +38,7 @@ export default function FindSpot () {
             console.log(address);
             var url = 'http://api.positionstack.com/v1/forward';
             var params = {
-                access_key: '440ef24516cb0d4d2bb1312b106d7314',
+                access_key: geolocationkey,
                 query: address
             }
             // call geolocation api with address
