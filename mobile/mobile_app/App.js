@@ -2,10 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import Firebase from './config/firebase';
+
 import Register from './components/Register';
 import Login from './components/Login';
 import Homepage from './components/Homepage';
 import ParkUser from './components/ParkUser';
+import SpotClaim from './components/SpotClaim';
+import FindSpot from './components/FindSpot';
+import GarageList from './components/GarageList';
+
 import { NativeRouter, Route } from "react-router-native";
 import { useHistory } from "react-router-dom";
 
@@ -33,11 +38,25 @@ export default function App() {
           userLoggedIn
           ?
             <View style = {styles.container}>
+                {/* Page 1 */ }
                 <Route exact path = "/">
                   <Homepage user={Firebase.auth().currentUser}/>
                 </Route>
+                {/* Page 2,3 */ }
                 <Route exact path = "/parkuser">
                   <ParkUser/>
+                </Route>
+                {/* Page 4 */ }
+                <Route exact path = "/findspot">
+                  <FindSpot/>
+                </Route>
+                {/* Page 5 */ }
+                <Route exact path = "/garagelist">
+                  <GarageList/>
+                </Route>
+                {/* Page 6 */ }
+                <Route exact path ="/spotclaim">
+                  <SpotClaim/>
                 </Route>
             </View>
           : 

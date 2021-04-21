@@ -5,10 +5,11 @@ import { useHistory } from "react-router-dom";
 
 // page 5 
 
-export default function GarageList(){
+export default function GarageList () {
   let history = useHistory();
   const [selectedValue, setSelectedValue] = useState("java");
-
+  
+  
   return (
     <SafeAreaView style={styles.container}>
       <ParkyHeader/>

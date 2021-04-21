@@ -4,13 +4,59 @@ import Firebase from '../config/firebase';
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
 
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
+// page 4
 export default function FindSpot () {
     
     let history = useHistory();
     const [address, setAddress] = useState(null);
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+
 
     const handleAddress = (address) => {
         setAddress(address)
+    }
+
+    const handlePressAddress = () => {
+        console.log("Handling address");
+    }
+
+    const handlePressLocation = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            Alert.alert(
+                "Couldn't find user location",
+                "Please try again or enter your address",
+                [
+                    {
+                        text: "Dismiss",
+                        style: "cancel"
+                    }
+                ]
+            )
+        }
+
+        let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.BestForNavigation});
+        const { latitude , longitude } = location.coords;
+        setLongitude(longitude);
+        setLatitude(latitude);
+        
+        console.log(latitude);
+        console.log(longitude);
+        // call our own api with the latitude and longitude
+        // push to garageList with props of array of garages 
+        
+        /*history.push({
+            pathname: "/garagelist",
+            state: {
+                long: longitude,
+                lat: latitude
+            }
+        });
+        */
     }
 
     return (
@@ -24,12 +70,12 @@ export default function FindSpot () {
                         placeholder="Enter your destination address"
                         keyboardAppearance = "dark"
                         secureTextEntry={false}
-                        onChangeText={(handleAddress)}
+                        onChangeText={handleAddress}
                     />
                     <Button
                         title="Use address"
                         color = '#ebbd34'
-                        onPress={() => history.push('/garagelist')}
+                        onPress={handlePressAddress}
                     />
                     <Text style={styles.text}>
                         - or -
@@ -37,7 +83,7 @@ export default function FindSpot () {
                     <Button
                         title="Use my location"
                         color = '#ebbd34'
-                        onPress={() => history.push('/garagelist')}
+                        onPress={handlePressLocation}
                     />
                 </SafeAreaView>
             </SafeAreaView>
