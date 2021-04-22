@@ -7,15 +7,22 @@ function createData(id, name, freeSpots, totalSpots)
     return { id, name, freeSpots, totalSpots };
 }
 
-
-function getA()
-{
-    return 5;
-}
-
+const useStyles = makeStyles((theme) => ({
+   
+    red: {
+      backgroundColor: "red",
+    },
+    yellow: {
+      backgroundColor: "yellow",
+    },
+    green: {
+      backgroundColor: "lime",
+    },
+  }));
 
 export default function GarageList()
 {
+    const classes = useStyles();
     
     function updateGarage(gar)
     {
@@ -91,6 +98,39 @@ export default function GarageList()
     }
     
 
+    function StatusRow(props)
+    {
+        var ratio = (props.rowd.freeSpots) / (props.rowd.totalSpots)
+        console.log("----------------------------");
+        console.log(ratio);
+        console.log(props.rowd.totalSpots );
+        console.log("----------------------------");
+        if(ratio > 0.5)
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.green}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+        else if(ratio > 0.25)
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.yellow}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+        else
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.red}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+    }
+
     const parkingGarages = [
         createData(0, 'A', spotsA, 1623),
         createData(0, 'B', spotsB, 1259),
@@ -113,11 +153,15 @@ export default function GarageList()
                 </TableHead>
                 <TableBody>
                     {parkingGarages.map((row) =>(
-                        <TableRow key={row.id}>
+                        <>
+                        <StatusRow rowd={row}>
+                        {/* <TableRow key={row.id} className={classes.red}> */}
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.freeSpots}</TableCell>
                             <TableCell>{row.totalSpots}</TableCell>
-                        </TableRow>
+                        {/* </TableRow> */}
+                        </StatusRow>
+                        </>
                     ))}
                 </TableBody>
             </Table>
