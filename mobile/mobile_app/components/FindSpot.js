@@ -47,7 +47,8 @@ export default function FindSpot () {
             // call geolocation api with address
             axios.get(url, {params})
             .then(response => {
-                console.log(response.data);
+                setLatitude(response.data.data[0].latitude);
+                setLongitude(response.data.data[0].longitude);
                 setLocation(true);
               }).catch(error => {
                 console.log(error);

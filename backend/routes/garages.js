@@ -95,7 +95,7 @@ router.post('/leaveSpot', (req, res) => {
 
 
 // findSpot api
-router.get('/findSpot', (req, res) => {
+router.post('/findSpot', (req, res) => {
     const long=req.body.lng;
     const lat=req.body.lat;
     Garage.find({location:{         

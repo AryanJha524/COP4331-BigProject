@@ -2,30 +2,44 @@ import React, { useState } from "react";
 import { View, Picker, StyleSheet,SafeAreaView, Button, Dimensions} from "react-native";
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
+const axios = require('axios');
 
 // page 5 
 
 const GarageList = ({latitude, longitude}) => {
   let history = useHistory();
-  const [selectedValue, setSelectedValue] = useState("java");
   
   console.log(latitude);
-  
   console.log(longitude);
+
+  const getListGarage = (long, lat) => {
+    let url = 'http://10.32.128.144:5000/garages/findSpot';
+
+    axios.post(url, {
+      lng: long,
+      lat: lat
+    })
+    .then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log(error);
+      });
+
+  }
   
   return (
     <SafeAreaView style={styles.container}>
       <SafeAreaView style={styles.container}>
+      <Button
+          title = "Generate list of garages"
+          onPress = {getListGarage(longitude, latitude)}
+          color = '#ebbd34'
+        />
         <Button
           title = "Go to spot claim page"
           onPress = {() => history.push("/spotclaim")}
         />
       </SafeAreaView>
-      <Button
-        title = "Return to home"
-        color = '#ebbd34'
-        onPress = {() => history.push("/")}
-      />
     </SafeAreaView>
   );
 }
