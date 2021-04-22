@@ -16,47 +16,7 @@ function getA()
 
 export default function GarageList()
 {
-    function checkOutput()
-    {
-        var garage = "Garage A";
-        // console.log("Hello");
-        // console.log(parkingGarages);
-        
     
-        const getSpots = async event =>
-        {
-            // event.preventDefault();
-        
-            var obj = {garageName: garage};
-            var js = JSON.stringify(obj);
-    
-            try
-            {
-                const response = await fetch('http://localhost:5000/garages/openSpots',
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-    
-                var txt = await response.text();
-                var res = JSON.parse(txt);
-                console.log(res);
-                {
-                   console.log("Received this amount for garage A: " + res.numOpenSpots);
-                   setSpotsA( prevSpots => res.numOpenSpots);
-                //    spots[0] += 5;
-                    // console.log("Spots: + " + spots);
-                    return res.numOpenSpots;
-                }
-            }
-            catch(e)
-            {
-                console.log("ERROR: " + e.toString());
-            }
-    
-        };
-        var run = getSpots();
-        // console.log("After getSpots");
-    
-    }
-
     function updateGarage(gar)
     {
         var garage = "Garage " + gar;
