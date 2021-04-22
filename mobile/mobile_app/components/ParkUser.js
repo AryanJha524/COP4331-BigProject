@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Alert, SafeAreaView, Button, TextInput, Text} f
 import Firebase from '../config/firebase';
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
-
+const axios = require('axios');
 
 // page 2, 3
 
@@ -13,8 +13,10 @@ export default function ParkUser() {
     const [garageName, setGarage] = useState(null);
     const [spotNumber, setSpot] = useState(-1);
     const [isParked, setParkStatus] = useState(false);
+
     // change when deployed
-    const baseurl = 'http://localhost:5000';
+    // when running locally, change to computers IP address
+    const baseurl = 'http://10.32.128.144:5000/';
 
     const handleGarage = (garage) => {
         setGarage(garage);
@@ -25,30 +27,21 @@ export default function ParkUser() {
     }
 
     const parkUser = (garageName, spotNumber) => {
-        // call parkSpot API 
-        const url = baseurl + 'garages/parkSpot';
-        /*fetch(url, {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: {
-                "garageName": garageName,
-                "spotNumber": spotNumber
-            }
+        // call parkSpot API  -- when running locally, change IP address to your local IP address
+        let url = 'http://10.32.128.144:5000/garages/parkSpot';
+
+        axios.post(url, {
+            garageName: garageName,
+            spotNumber: spotNumber
         })
-        .then(function(res) {
-            if (res.success) {
+        .then(response => {
+            if (response.data.success) {
+                console.log(response.data);
                 setParkStatus(true);
-                // MIGHT have to call useEffect to refresh this once status is set
-                console.log("User has been parked")
             }
-            else {
-                console.log("error, couldn't park the user") // ADD AN ERROR ALERT HERE
-            }
-        })
-        .catch(err => {console.log(err)}); // ADD AN ERROR ALERT HERE 
-        */
-    
-        setParkStatus(true);
+          }).catch(error => {
+            console.log(error);
+          });
     }
 
     const handlePress = () => {
@@ -83,27 +76,21 @@ export default function ParkUser() {
     }
 
     const handleLeave = () => {
-        const url = baseurl + '/leaveSpot';
-        // call leave spot API 
-        /*fetch(url, {
-            method: 'post',
-            body: {"garageName": garageName, "spotNumber": spotNumber}
-        })
-        .then(function (res) {
-            if (res.success) {
-                console.log("Left spot")
-                // redirect to homepage
-            }
-            else {
-                console.log('error')
-            }
-            
-        })
-        .catch(err => {console.log(err)});
-        */
-        setParkStatus(false);
-        history.push('/');
+        // call leave spot API -- when running locally, change IP address to your local IP address
+        let url = 'http://10.32.128.144:5000/garages/leaveSpot';
 
+        axios.post(url, {
+            garageName: garageName,
+            spotNumber: spotNumber
+        })
+        .then(response => {
+            if (response.data.success) {
+                setParkStatus(false);
+                history.push('/');
+            }
+          }).catch(error => {
+            console.log(error);
+          });
     }
     
     let text2 = " Spot: " + spotNumber;

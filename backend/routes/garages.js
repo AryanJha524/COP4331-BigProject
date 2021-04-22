@@ -49,15 +49,15 @@ router.post('/parkSpot', (req, res) => {
             // update provided level and spot number in this garage's array
             var spotNumber = req.body.spotNumber;
 
-            if (spotNumber <= 0) {
+            if (spotNumber < 0) {
                 return res.status(200).json({err: "Invalid spot"});
             }
-            if (!garage.spotsArray[spotNumber - 1].isOpen) {
+            if (!garage.spotsArray[spotNumber].isOpen) {
                 return res.status(200).json({err: "Can't park here"});
             }    
-            garage.spotsArray[spotNumber - 1].isOpen = false;
+            garage.spotsArray[spotNumber].isOpen = false;
             garage.save()
-            .then(garage => res.status(200).json({success: "Spot closed!"}))
+            .then(() => res.status(200).json({success: "Spot closed!"}))
             .catch(err => res.status(200).json(err));                
             
         }
@@ -66,6 +66,7 @@ router.post('/parkSpot', (req, res) => {
         }
     })
 })
+
 
 // leaveSpot api
 router.post('/leaveSpot', (req, res) => {
@@ -77,10 +78,10 @@ router.post('/leaveSpot', (req, res) => {
             // update provided level and spot number in this garage's array
             var spotNumber = req.body.spotNumber;
 
-            if (spotNumber <= 0) {
+            if (spotNumber < 0) {
                 return res.status(200).json({err: "Invalid spot"});
             }    
-            garage.spotsArray[spotNumber - 1].isOpen = true;
+            garage.spotsArray[spotNumber].isOpen = true;
             garage.save()
             .then(garage => res.status(200).json({success: "Spot opened!"}))
             .catch(err => res.status(200).json(err));                
@@ -91,6 +92,7 @@ router.post('/leaveSpot', (req, res) => {
         }
     })
 })
+
 
 // findSpot api
 router.get('/findSpot', (req, res) => {
@@ -111,6 +113,7 @@ router.get('/findSpot', (req, res) => {
                     }
                 });
 });
+
 
 // openSpots api
 router.post('/openSpots', (req, res) => {

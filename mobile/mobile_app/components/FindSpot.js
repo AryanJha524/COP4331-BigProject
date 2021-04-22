@@ -39,7 +39,6 @@ export default function FindSpot () {
             )
         }
         else {
-            console.log(address);
             var url = 'http://api.positionstack.com/v1/forward';
             var params = {
                 access_key: geolocationkey,
@@ -49,7 +48,7 @@ export default function FindSpot () {
             axios.get(url, {params})
             .then(response => {
                 console.log(response.data);
-                // setLocation(true);
+                setLocation(true);
               }).catch(error => {
                 console.log(error);
               });
@@ -113,6 +112,11 @@ export default function FindSpot () {
                     />
                 </SafeAreaView>
                 }
+            <Button
+                title="Return to home"
+                color = '#ebbd34'
+                onPress={() => history.push("/")}
+            />
             </SafeAreaView>
         </SafeAreaView>
     )
