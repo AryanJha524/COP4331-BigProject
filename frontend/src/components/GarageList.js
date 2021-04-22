@@ -98,9 +98,6 @@ export default function GarageList()
                         case 'H':
                             setSpotsH( prevSpots => res.numOpenSpots);
                             break;
-                        case 'G':
-                            setSpotsG( prevSpots => res.numOpenSpots);
-                            break;
                         case 'I':
                             setSpotsI( prevSpots => res.numOpenSpots);
                             break;
@@ -118,15 +115,14 @@ export default function GarageList()
         // console.log("After getSpots");
     
     }
-    const [spotsA, setSpotsA] = React.useState(() => checkOutput());
-    const [spotsB, setSpotsB] = React.useState(() => checkOutput());
-    const [spotsC, setSpotsC] = React.useState(() => checkOutput());
-    const [spotsD, setSpotsD] = React.useState(() => checkOutput());
-    const [spotsG, setSpotsG] = React.useState(() => checkOutput());
-    const [spotsH, setSpotsH] = React.useState(() => checkOutput());
-    const [spotsI, setSpotsI] = React.useState(() => checkOutput());
+    const [spotsA, setSpotsA] = React.useState(() => updateGarage('A'));
+    const [spotsB, setSpotsB] = React.useState(() => updateGarage('B'));
+    const [spotsC, setSpotsC] = React.useState(() => updateGarage('C'));
+    const [spotsD, setSpotsD] = React.useState(() => updateGarage('D'));
+    const [spotsH, setSpotsH] = React.useState(() => updateGarage('H'));
+    const [spotsI, setSpotsI] = React.useState(() => updateGarage('I'));
 
-    const garages = ['A', 'B', 'C', 'D','G', 'H' ,'I'];
+    const garages = ['A', 'B', 'C', 'D', 'H' ,'I'];
     
     function refreshGarages()
     {
@@ -136,13 +132,12 @@ export default function GarageList()
     
 
     const parkingGarages = [
-        createData(0, 'A', spotsA, 100),
-        createData(0, 'B', spotsB, 100),
-        createData(0, 'C', spotsC, 100),
-        createData(0, 'D', spotsD, 100),
-        createData(0, 'G', spotsG, 100),
-        createData(0, 'H', spotsH, 100),
-        createData(0, 'I', spotsI, 100),
+        createData(0, 'A', spotsA, 1623),
+        createData(0, 'B', spotsB, 1259),
+        createData(0, 'C', spotsC, 1852),
+        createData(0, 'D', spotsD, 1241),
+        createData(0, 'H', spotsH, 1284),
+        createData(0, 'I', spotsI, 1231),
     ];
     return(
         <React.Fragment>
