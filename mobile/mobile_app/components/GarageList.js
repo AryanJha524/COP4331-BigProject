@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Picker, StyleSheet,SafeAreaView, Button, Dimensions} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet,SafeAreaView, Button, Dimensions} from "react-native";
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
 const axios = require('axios');
@@ -9,36 +9,48 @@ const axios = require('axios');
 const GarageList = ({latitude, longitude}) => {
   let history = useHistory();
   
-  console.log(latitude);
-  console.log(longitude);
+  const [garageInfo, setGarageInfo] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getListGarage = (long, lat) => {
-    let url = 'http://10.32.128.144:5000/garages/findSpot';
-
-    axios.post(url, {
-      lng: long,
-      lat: lat
+  useEffect(() => {
+    setIsLoading(true);
+    axios.post('https://ucfparkyapi.herokuapp.com/findSpot', {lng:longitude, lat:latitude})
+    .then(res => {
+      setIsLoading(false);
+      setGarageInfo(res);
     })
-    .then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.log(error);
-      });
-
-  }
+    .catch(err => {
+      console.log(err);
+      setIsLoading(false);
+    })
+  }, [])
   
   return (
     <SafeAreaView style={styles.container}>
       <SafeAreaView style={styles.container}>
-      <Button
-          title = "Generate list of garages"
-          onPress = {getListGarage(longitude, latitude)}
-          color = '#ebbd34'
-        />
-        <Button
-          title = "Go to spot claim page"
-          onPress = {() => history.push("/spotclaim")}
-        />
+        {
+          isLoading
+          ?
+          <SafeAreaView>
+            <Text style={{color: "white"}}>Loading </Text>
+          </SafeAreaView>
+          :
+          <SafeAreaView>
+            <Button
+              title = "Go to spot claim page"
+              onPress = {() => history.push("/spotclaim")}
+            />
+            <Button
+              title = "Print results"
+              onPress = {() => console.log(garageInfo)}
+            />
+          </SafeAreaView>
+        }
+        {/* <Button
+            title = "Generate list of garages"
+            // onPress = {() => getListGarage(longitude, latitude)}
+            color = '#ebbd34'
+          /> */}
       </SafeAreaView>
     </SafeAreaView>
   );

@@ -14,9 +14,6 @@ export default function ParkUser() {
     const [spotNumber, setSpot] = useState(-1);
     const [isParked, setParkStatus] = useState(false);
 
-    // change when deployed
-    // when running locally, change to computers IP address
-    const baseurl = 'http://10.32.128.144:5000/';
 
     const handleGarage = (garage) => {
         setGarage(garage);
@@ -28,7 +25,7 @@ export default function ParkUser() {
 
     const parkUser = (garageName, spotNumber) => {
         // call parkSpot API  -- when running locally, change IP address to your local IP address
-        let url = 'http://10.32.128.144:5000/garages/parkSpot';
+        let url = 'https://ucfparkyapi.herokuapp.com/parkSpot';
 
         axios.post(url, {
             garageName: garageName,
@@ -38,6 +35,9 @@ export default function ParkUser() {
             if (response.data.success) {
                 console.log(response.data);
                 setParkStatus(true);
+            }
+            else {
+                console.log("couldn't park here")
             }
           }).catch(error => {
             console.log(error);
@@ -77,7 +77,7 @@ export default function ParkUser() {
 
     const handleLeave = () => {
         // call leave spot API -- when running locally, change IP address to your local IP address
-        let url = 'http://10.32.128.144:5000/garages/leaveSpot';
+        let url = 'https://ucfparkyapi.herokuapp.com/leaveSpot';
 
         axios.post(url, {
             garageName: garageName,
