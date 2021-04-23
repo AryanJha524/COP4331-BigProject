@@ -22,7 +22,7 @@ export default function App(){
 
   useEffect(() => {
     const authListener = auth.onAuthStateChanged((user) => {
-      setUserLoggedIn(user ? true : false);
+      setUserLoggedIn((user == null) ? false :(user.emailVerified ? true : false));
       setIsLoading(false);
       setUserProfile(user);
     });
