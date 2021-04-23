@@ -25,6 +25,9 @@ const registerStyle = makeStyles((theme) => ({
         },
         appbarTitle:{
           flexGrow: '1',
+          position: 'relative',
+          marginLeft: 0,
+          width: '100%',
         },
         colorText: {
           color: '#fff',
@@ -54,8 +57,15 @@ const registerStyle = makeStyles((theme) => ({
           margin: theme.spacing(3, 0, 2),
         },
         icon: {
-            marginRight: '20px'
+            //marginRight: '20px'
+            alignItems: 'center',
         },
+        homeButton: {
+          // position: 'relative',
+          // marginLeft: 0,
+          // width: '100%',
+          flexGrow: 1,
+        }
       }));
       
     export default registerStyle;

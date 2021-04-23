@@ -20,8 +20,8 @@ export default class Routes extends Component {
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/register" component={RegisterPage} />
                 <Route exact path="/forgot-password" component={ForgotPassword} />
-                <Route exact path="/pref" component={NewPref} />
-                <PrivateRoute exact path="/dashboard" component={Dashboard}/> 
+                <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+                <PrivateRoute exact path="/pref" component={NewPref} />
                 </Switch>
                 </AuthProvider>
             </Router>

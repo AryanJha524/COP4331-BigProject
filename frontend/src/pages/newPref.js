@@ -121,7 +121,7 @@ export default function NewPref() {
   const history = useHistory();
 
   const routeChange = () =>{ 
-    let path = `/Home.js`; 
+    let path = `/dashboard`; 
     history.push(path);
   }
 

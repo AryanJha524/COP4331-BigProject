@@ -22,6 +22,9 @@ const loginStyle = makeStyles((theme) => ({
       },
       appbarTitle:{
         flexGrow: '1',
+        position: 'relative',
+        marginLeft: 0,
+        width: '100%',
       },
     paper: {
       margin: theme.spacing(8, 4),
@@ -46,12 +49,14 @@ const loginStyle = makeStyles((theme) => ({
       color: '#fff',
     },
     icon: {
-      marginRight: '20px',
+      //marginRight: '20px',
+      alignItems: 'center',
   },
   homeButton: {
-    position: 'relative',
-    marginLeft: 0,
-    width: '100%',
+    // position: 'relative',
+    // marginLeft: 0,
+    // width: '100%',
+    flexGrow: 1,
   }
   }));
 

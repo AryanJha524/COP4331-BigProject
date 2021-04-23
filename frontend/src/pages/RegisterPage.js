@@ -59,9 +59,9 @@ export default function RegisterPage(){
     // Signed in 
     var user = userCredential.user;
     user.sendEmailVerification();
-    alert("email sent to " + email + " check junk folder.")
+    alert("email sent to " + email);
     console.log(user)
-    history.push('/dashboard')
+    history.push('/login')
   })
   .catch((error) => console.log(error));
   }

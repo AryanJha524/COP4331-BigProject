@@ -83,6 +83,7 @@ export default function GarageList()
     
     }
     const [spotsA, setSpotsA] = React.useState(() => updateGarage('A'));
+    console.log("A List --- " + updateGarage('A'));
     const [spotsB, setSpotsB] = React.useState(() => updateGarage('B'));
     const [spotsC, setSpotsC] = React.useState(() => updateGarage('C'));
     const [spotsD, setSpotsD] = React.useState(() => updateGarage('D'));

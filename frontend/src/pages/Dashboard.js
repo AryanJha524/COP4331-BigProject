@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Paper, Badge, Button, CssBaseline, AppBar, Toolbar, IconButton, Typography, Grid } from '@material-ui/core';
+import { Container, Paper, Badge, Button, CssBaseline, AppBar, Toolbar, IconButton, Typography, Grid, Link } from '@material-ui/core';
 import AuthContext from './../Auth.js';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import fire from '../fire.js';
+import fire, { auth } from '../fire.js';
 import Reserve from './../components/Reserve';
 import GarageList from './../components/GarageList';
 import DriveEtaIcon from '@material-ui/icons/DriveEta'
 import UserInfo from '../components/UserInfo';
+import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -87,6 +88,7 @@ const navbarStyle = makeStyles((theme) => ({
 export default function Dashboard(){
     const classes = navbarStyle();
     const [open, setOpen] = useState(true);
+    const history = useHistory();
 
     const notifCount = 0;
 
@@ -110,7 +112,7 @@ export default function Dashboard(){
             <AppBar position="absolute" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                       <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        logged in user's name
+                        {auth.currentUser.email}
                       </Typography>
                       <h1 className={classes.appbarTitle}>
                         <span className={classes.colorText}>

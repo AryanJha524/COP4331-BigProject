@@ -10,6 +10,5 @@ const fire = firebase.initializeApp({
     appId: "1:61199123703:web:e1914ec42e78dd3ff27ff2"
 });
 
-// firebase.initializeApp(fire);
 export const auth = fire.auth();
 export default fire;

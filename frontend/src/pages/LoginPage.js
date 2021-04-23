@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { Alert } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core/styles';
 import fire from '../fire.js';
 import RegisterPage from './RegisterPage';
@@ -54,6 +55,7 @@ export default function LoginPage(){
         .then((userCredential) => {
           var user = userCredential.user;
           console.log(user)
+<<<<<<< Updated upstream
           console.log("User verified is: " + user.emailVerified)
           if(user.emailVerified == true)
             {history.push("/dashboard");}
@@ -61,6 +63,9 @@ export default function LoginPage(){
           {
             setError("Please check your email for verification.");
           }          
+=======
+          history.push("/dashboard");
+>>>>>>> Stashed changes
         setLoading(false);
         })     
       .catch((error) => {console.log(error); setError(error.message);});
@@ -71,9 +76,10 @@ export default function LoginPage(){
       <CssBaseline />
       <AppBar className={classes.appbar} position="absolute" variant="regular">
         <Toolbar>
-          <DriveEtaIcon className={classes.icon}/>
-          <Typography variant="h6">
-            Parky Sign In
+          <Typography className={classes.appbarTitle} variant="h6">
+            Parky
+            <DriveEtaIcon className={classes.icon}/>
+            <span margin='auto'>Login</span>
           </Typography>
           <Button className={classes.homeButton} onClick={() => history.push('/')} color="inherit">
           {"Home"}
@@ -91,6 +97,7 @@ export default function LoginPage(){
           <Typography component="h1" variant="h5">
             Please Log in
           </Typography>
+          {error && <Alert variant="danger">{error}</Alert>}
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"

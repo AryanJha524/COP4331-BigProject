@@ -9,7 +9,7 @@ const homeStyle = makeStyles((theme)=> ({
         height: "100vh",
         color: 'white',
         minheight: '70vh',
-        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/carLoginPic.jpg'})`,
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/retroSunset.jpg'})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
 
