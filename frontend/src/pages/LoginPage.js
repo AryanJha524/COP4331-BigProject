@@ -54,11 +54,16 @@ export default function LoginPage(){
         .then((userCredential) => {
           var user = userCredential.user;
           console.log(user)
-          history.push("/dashboard");
-          setError("Failed to login");
+          console.log("User verified is: " + user.emailVerified)
+          if(user.emailVerified == true)
+            {history.push("/dashboard");}
+          else
+          {
+            setError("Please check your email for verification.");
+          }          
         setLoading(false);
         })     
-      .catch((error) => console.log(error));
+      .catch((error) => {console.log(error); setError(error.message);});
     }
 
   return (
@@ -124,6 +129,7 @@ export default function LoginPage(){
             >
               Log In
             </Button>
+            <Typography color="error" >{error}</Typography>
             {/* <Button
               className={classes.submit}
               type="submit"
