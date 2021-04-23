@@ -7,56 +7,23 @@ function createData(id, name, freeSpots, totalSpots)
     return { id, name, freeSpots, totalSpots };
 }
 
-
-function getA()
-{
-    return 5;
-}
-
+const useStyles = makeStyles((theme) => ({
+   
+    red: {
+      backgroundColor: "red",
+    },
+    yellow: {
+      backgroundColor: "yellow",
+    },
+    green: {
+      backgroundColor: "lime",
+    },
+  }));
 
 export default function GarageList()
 {
-    function checkOutput()
-    {
-        var garage = "Garage A";
-        // console.log("Hello");
-        // console.log(parkingGarages);
-        
+    const classes = useStyles();
     
-        const getSpots = async event =>
-        {
-            // event.preventDefault();
-        
-            var obj = {garageName: garage};
-            var js = JSON.stringify(obj);
-    
-            try
-            {
-                const response = await fetch('http://localhost:5000/garages/openSpots',
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-    
-                var txt = await response.text();
-                var res = JSON.parse(txt);
-                console.log(res);
-                {
-                   console.log("Received this amount for garage A: " + res.numOpenSpots);
-                   setSpotsA( prevSpots => res.numOpenSpots);
-                //    spots[0] += 5;
-                    // console.log("Spots: + " + spots);
-                    return res.numOpenSpots;
-                }
-            }
-            catch(e)
-            {
-                console.log("ERROR: " + e.toString());
-            }
-    
-        };
-        var run = getSpots();
-        // console.log("After getSpots");
-    
-    }
-
     function updateGarage(gar)
     {
         var garage = "Garage " + gar;
@@ -131,6 +98,39 @@ export default function GarageList()
     }
     
 
+    function StatusRow(props)
+    {
+        var ratio = (props.rowd.freeSpots) / (props.rowd.totalSpots)
+        console.log("----------------------------");
+        console.log(ratio);
+        console.log(props.rowd.totalSpots );
+        console.log("----------------------------");
+        if(ratio > 0.5)
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.green}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+        else if(ratio > 0.25)
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.yellow}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+        else
+        return (
+            <> 
+                <TableRow key={props.rowd.id} className={classes.red}>
+                  {props.children}
+                </TableRow>
+            </>
+        );
+    }
+
     const parkingGarages = [
         createData(0, 'A', spotsA, 1623),
         createData(0, 'B', spotsB, 1259),
@@ -153,11 +153,15 @@ export default function GarageList()
                 </TableHead>
                 <TableBody>
                     {parkingGarages.map((row) =>(
-                        <TableRow key={row.id}>
+                        <>
+                        <StatusRow rowd={row}>
+                        {/* <TableRow key={row.id} className={classes.red}> */}
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.freeSpots}</TableCell>
                             <TableCell>{row.totalSpots}</TableCell>
-                        </TableRow>
+                        {/* </TableRow> */}
+                        </StatusRow>
+                        </>
                     ))}
                 </TableBody>
             </Table>

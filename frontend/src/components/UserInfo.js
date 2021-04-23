@@ -11,63 +11,96 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-function changePassword(newPass)
-{
-    auth.currentUser.updatePassword(newPass);
-    setPassword(false);
-}
-
-function Popup(props) {
-    const classes = useStyles();
-     return (props.trigger) ? (
-         <>
-                 <Button type="submit"
-               fullWidth
-               variant="contained"
-               color="primary"
-               className={classes.submit} 
-               onClick={()=> props.setTrigger(false)}> Cancel</Button>
-               <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth= {true}
-              name="password"
-              label="New Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth 
-              name="password"
-              label="Confirm New Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Save
-            </Button>
-               </>
-     ) : "";
- }
-
-export default function UserInfo()
-{
-    const classes = useStyles();
-    var email = auth.currentUser.email;
+  
+  
+  export default function UserInfo()
+  {
     const [password, setPassword] = React.useState(false);
+    const [status, setStatus] = React.useState("");
+    const classes = useStyles();
+    var newPass = "";
+    var confPass = "";
+    
+    const handleChange = e => {
+      newPass = e.target.value;
+    }
+    
+    const handleConfChange = e => {
+      confPass = e.target.value;
+    }
+    
+    function changePassword(pass)
+    {
+      auth.currentUser.updatePassword(pass).then(function() {
+        console.log("Password Changed!");
+        setStatus("Password changed successfully!");
+        setPassword(false);
+      }).catch(function(error) {
+        console.log(error);
+        setStatus(error.message);
+      });
+    }
+
+  function Popup(props) {
+    
+      const classes = useStyles();
+       return (props.trigger) ? (
+           <>
+                   <Button type="submit"
+                 fullWidth
+                 variant="contained"
+                 color="primary"
+                 className={classes.submit} 
+                 onClick={()=> props.setTrigger(false)}> Cancel</Button>
+                <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                required
+                onChange={handleChange}
+                name="password"
+                label="New Password"
+                type="password"
+                id="password"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth 
+                required
+                onChange={handleConfChange}
+                name="confPass"
+                label="Confirm New Password"
+                type="password"
+                id="confPass"
+              />
+              {props.children}
+                 </>
+       ) : "";
+   }
+
+  function handleStatus()
+  {
+    if(newPass.length == 0 || confPass.length == 0)
+    {
+      setStatus("Must enter password in both fields!");
+      return;
+    }
+    else if(newPass.localeCompare(confPass) != 0)
+    {
+      setStatus("Passwords mush match!");
+      return;
+    }
+    changePassword(newPass);
+    
+    
+        
+  }
+
+    var email = auth.currentUser.email;
     return(
         <>
-            <Typography> User Info: {email}</Typography>
+            <Typography align='center' variant='h6'> Logged in as: {email}</Typography>
             <Button
                 type="submit"
                 variant="contained"
@@ -79,37 +112,19 @@ export default function UserInfo()
             </Button>
             <Container>
            <Popup trigger={password} setTrigger={setPassword}>
-          <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth= {true}
-              name="password"
-              label="New Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth 
-              name="password"
-              label="Confirm New Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
+          
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={changePassword()}
+              onClick={() => handleStatus()}
             >
               Save
             </Button>
           </Popup>
+          <Typography>{status}</Typography>
           </Container>
           </>
     )
