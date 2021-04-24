@@ -37,8 +37,9 @@ const DATA = {
 }
 
 const Item = ({ title }) => (
-  <Button title = {title} style={styles.item}>
-  </Button>
+  <Text style={styles.text}>
+    {title}
+  </Text>
 );
 
 const makeItem = (spotNo, spotStatus) => {
@@ -92,25 +93,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   container: {
-      flex: 1,
-      backgroundColor: 'black',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: Dimensions.get('window').height,
-      width: Dimensions.get('window').width,
+    flex: 1,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
     },
   text: {
-      color: "white",
-      fontSize: 25,
-      justifyContent: "center",
-      alignItems: 'center',
-      marginTop: 50,
-      marginBottom: 50,
-      textAlign:"center"
+    color: "white",
+    fontSize: 25,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 50,
+    textAlign:"center"
   },
   item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16
+    color: "white",
+    fontSize: 25,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 50,
+    textAlign:"center"
   }
 });
