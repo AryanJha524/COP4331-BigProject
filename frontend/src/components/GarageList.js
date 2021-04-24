@@ -40,7 +40,8 @@ export default function GarageList()
     
             try
             {
-                const response = await fetch('http://localhost:5000/garages/openSpots',
+                // const response = await fetch('http://localhost:5000/garages/openSpots',
+                const response = await fetch('https://ucfparkyapi.herokuapp.com/openSpots',
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
     
                 var txt = await response.text();

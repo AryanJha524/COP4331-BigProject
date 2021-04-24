@@ -122,7 +122,6 @@ export default function Dashboard(){
                      </h1>
                       <IconButton color="inherit">
                           <Badge badgeContent={notifCount} color="secondary">
-                              <NotificationsIcon />
                           </Badge>
                       </IconButton>
                       <Button onClick={handleSignOut} color="inherit">

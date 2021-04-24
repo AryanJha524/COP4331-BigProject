@@ -55,7 +55,6 @@ export default function LoginPage(){
         .then((userCredential) => {
           var user = userCredential.user;
           console.log(user)
-<<<<<<< Updated upstream
           console.log("User verified is: " + user.emailVerified)
           if(user.emailVerified == true)
             {history.push("/dashboard");}
@@ -63,9 +62,6 @@ export default function LoginPage(){
           {
             setError("Please check your email for verification.");
           }          
-=======
-          history.push("/dashboard");
->>>>>>> Stashed changes
         setLoading(false);
         })     
       .catch((error) => {console.log(error); setError(error.message);});

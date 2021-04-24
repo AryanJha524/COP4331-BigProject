@@ -57,6 +57,7 @@ export default function Reserve()
           return;
         }
         setOpen(false);
+        setSnack(false);
     }
 
     async function getGarageData(gar)
@@ -81,43 +82,11 @@ export default function Reserve()
             //console.log("garage info for " + garage + ": status(" + capStatus + ")  availible spot(" + spotAvailible + ")");
             console.log(data);
             console.log("is garage " + gar +" full: " + data.capStatus);
+            setStatus(data.capStatus);
             console.log("The next open spot in garage " + gar + " is: " + data.spotAvailible); 
+            setSpotNum(data.spotAvailible);
+            return res;
             
-            if (data.capStatus === false)
-            {
-                return (
-                    <div className={classes.snackRoot}>
-                        <Snackbar
-                          open={open}
-                          onClose={handleSnackClose}
-                          autoHideDuration={6000}
-                        >
-                          <Alert severity="success" onClose={handleSnackClose}>
-                              Yay! This garage is open for parking!
-                              Garage Status: {data.capStatus}
-                              Closest Available Spot: {data.spotAvailible}
-                          </Alert>
-                        </Snackbar>
-                    </div>
-                )
-            }    
-            
-            else
-            {
-                return(
-                    <div className={classes.snackRoot}>
-                        <Snackbar
-                        open={open}
-                        onClose={handleSnackClose}
-                        autoHideDuration={6000}
-                        >
-                        <Alert severity="error" onClose={handleSnackClose}>
-                            Sorry! This garage is full. Choose another garage.
-                        </Alert>
-                        </Snackbar>
-                    </div>
-                )
-            }
         }
         catch(e)
         {
@@ -125,13 +94,52 @@ export default function Reserve()
         }
     }
 
+    function GarageData(props)
+    {
+        getGarageData(props.garage);
+        console.log("==================")
+        console.log("Returning with Status: " + status + " spotNum: " + spotNum)
+        return (props.trigger) ? ((status === false) ?
+        (
+                <div className={classes.snackRoot}>
+                    <Snackbar
+                      open={snack}
+                      onClose={handleSnackClose}
+                      autoHideDuration={3000}
+                    >
+                      <Alert severity="success" onClose={handleSnackClose}>
+                          Yay! This garage is open for parking!
+                          Garage Status: {status}
+                          Closest Available Spot: {spotNum}
+                      </Alert>
+                    </Snackbar>
+                </div>)
+        :(
+                <div className={classes.snackRoot}>
+                    <Snackbar
+                    open={snack}
+                    onClose={handleSnackClose}
+                    autoHideDuration={3500}
+                    >
+                    <Alert severity="error" onClose={handleSnackClose}>
+                        Sorry! This garage is full. Choose another garage.
+                    </Alert>
+                    </Snackbar>
+                </div>
+            )
+        ) :<></>
+    }
+
+    const [snack, setSnack] = React.useState(false);
+    const [spotNum, setSpotNum] = React.useState(-999);
+    const [status, setStatus] = React.useState(false);
+
     return(
         <React.Fragment>
-            <Typography>
-                current garage reserved from user
-                choose to reserve garage here!
+            <Typography variant="h6" align="center">
+                Find an available spot!
             </Typography>
-            <div>
+            <div align="center">
                 <FormControl className={classes.formControl}>
                     <InputLabel id="choose-garage-label">Garage</InputLabel>
                     <Select
@@ -153,9 +161,11 @@ export default function Reserve()
                         <MenuItem value={'I'}> I </MenuItem>
                     </Select>
                 </FormControl>
-                <Button className={classes.button} onClick={() => getGarageData(garage)}>
+                <Button className={classes.button} type="submit"
+                variant="contained" color="primary" onClick={() => setSnack(true)}>
                     Select Garage
                 </Button>
+                <GarageData trigger={snack} setTrigger={setSnack} garage={garage} >here</GarageData>
             </div>
         </React.Fragment>
     )
