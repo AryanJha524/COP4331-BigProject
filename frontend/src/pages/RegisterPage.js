@@ -18,7 +18,7 @@ export default function RegisterPage(){
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
 
@@ -63,7 +63,7 @@ export default function RegisterPage(){
     console.log(user)
     history.push('/login')
   })
-  .catch((error) => console.log(error));
+  .catch((error) => {console.log(error); setError(error.message)});
   }
 
   return (
@@ -139,6 +139,7 @@ export default function RegisterPage(){
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            <Typography color="error"> {error} </Typography>
             <Button
               onClick={handleSignUp}
               type="submit"
@@ -149,7 +150,7 @@ export default function RegisterPage(){
             >
               Register!
             </Button>
-            <Button
+            {/* <Button
               className={classes.submit}
               type="submit"
               fullWidth
@@ -158,7 +159,7 @@ export default function RegisterPage(){
               //onClick={signInWithGoogle}
             >
               Sign In with Google
-            </Button>
+            </Button> */}
             <Grid container>
               <Grid item>
                 <Link href="#" variant="body2" 
