@@ -28,11 +28,15 @@ const GarageList = ({latitude, longitude}) => {
   const handlePress = (garageName) => {
     for (let i = 0; i < garageInfo.data.length; i++) {
       if (garageInfo.data[i].name.localeCompare(garageName) == 0) {
-        history.push('/spotclaim')
+        history.push({
+          pathname: '/spotclaim',
+          state: {
+            DATA: garageInfo.data[i]
+          }
+      })
       }
     }
   }
-
 
   // component to display each garage 
   const Item = ({ title }) => (

@@ -1,40 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, Button, Dimensions} from 'react-native';
 import ParkyHeader from './ParkyHeader';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 
 // page 6
-
-const DATA = {
-    "location": {
-      "type": "Point",
-      "coordinates": [
-        28.60116,
-        -81.20498
-      ]
-    },
-    "_id": "608096650ba75f47fb65b89b",
-    "name": "Garage I",
-    "numberSpots": 1231,
-    "spotsArray": [
-      {
-        "_id": "608096650ba75f47fb65b89c",
-        "spot": "0",
-        "isOpen": true
-      },
-      {
-        "_id": "608096650ba75f47fb65b89d",
-        "spot": "1",
-        "isOpen": true
-      },
-      {
-        "_id": "608096650ba75f47fb65b89e",
-        "spot": "2",
-        "isOpen": true
-      }
-    ]
-}
 
 const Item = ({ title }) => (
   <Text style={styles.text}>
@@ -55,9 +25,17 @@ const makeItem = (spotNo, spotStatus) => {
 }
 
 
+
 export default function SpotClaim() {
 
   let history = useHistory();
+  const location = useLocation();
+
+  const [DATA, setDATA] = useState(null);
+  
+  useEffect(() => {
+    setDATA(location.state.DATA);
+  })
 
   const renderItem = ({ item }) => (
     <Item title={makeItem(item.spot, item.isOpen)} />
@@ -69,9 +47,9 @@ export default function SpotClaim() {
       <View style = {styles.header}>
         <ParkyHeader/>
       </View>
-      <Text style={styles.text}> {DATA.name} </Text>  
+      <Text style={styles.text}> {location.state.DATA.name} </Text>  
       <FlatList
-        data = {DATA.spotsArray}
+        data = {location.state.DATA.spotsArray}
         renderItem={renderItem}
         keyExtractor={item => item._id}
       />
