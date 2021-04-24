@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Typography, InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
+import { Button, Typography, InputLabel, MenuItem, FormControl, Select, Snackbar } from '@material-ui/core';
 import { useHistory, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -12,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         minWidth: 120,
     },
+    snackRoot: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+      },
 }));
 
 export default function Reserve()
@@ -21,6 +32,7 @@ export default function Reserve()
     const [garage, setGarage] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState(false);
+    const [transition, setTransition] = React.useState(undefined);
     // const [statusA, setStatusA] = React.useState(false);
     // const [statusB, setStatusB] = React.useState(false);
     // const [statusC, setStatusC] = React.useState(false);
@@ -40,111 +52,14 @@ export default function Reserve()
         setOpen(true);
     };
 
-    //   function getGarageInfo(gar)
-    //   {
-    //       var garage = "Garage " + gar;
+    const handleSnackClose = (event, reason) => {
+        if (reason === 'clickaway'){
+          return;
+        }
+        setOpen(false);
+    }
 
-    //         const getGarageStatus = async event => 
-    //         {
-    //             var obj = {garageName: garage};
-    //             var js = JSON.stringify(obj);
-
-    //             try
-    //             {
-    //                 const response = await fetch('https://ucfparkyapi.herokuapp.com/isFull',
-    //                 {method:'POST', body:js, headers:{'Content-Type': 'application/json'}});
-
-    //                 var txt = await response.text();
-    //                 var res = JSON.parse(txt);
-    //                 // console.log(res);
-    //                 {
-    //                     console.log("status for " + garage + ": " + res.isFull);
-    //                     switch (res.garageName)
-    //                     {
-    //                         case 'A':
-    //                             setStatusA(res.isFull);
-    //                             break;
-    //                         case 'B':
-    //                             setStatusB(res.isFull);
-    //                             break;
-    //                         case 'C':
-    //                             setStatusC(res.isFull);
-    //                             break;
-    //                         case 'D':
-    //                             setStatusD(res.isFull);
-    //                             break;
-    //                         case 'H':
-    //                             setStatusH(res.isFull);
-    //                             break;
-    //                         case 'I':
-    //                             setStatusI(res.isFull);
-    //                             break;
-    //                     }
-    //                     return res.isFull;
-    //                 }
-    //             }
-
-    //             catch(e)
-    //             {
-    //                 console.log("Error: " + e.toString());
-    //             }
-
-    //         };
-
-            // const getClosestSpot = async event => {
-            //     var obj = {garageName: garage};
-            //     var js = JSON.stringify(obj);
-
-            //     try
-            //     {
-            //         const response = await fetch('https://ucfparkyapi.herokuapp.com/isFull',
-            //         {method:'POST', body:js, headers:{'Content-Type': 'application/json'}});
-            //         var txt = await response.text();
-            //         var res = JSON.parse(txt);
-            //         {
-            //             console.log("Nearest spot in " + garage + ": " + res.openSpotNumber);
-            //             switch(res.garageName)
-            //             {
-            //                 case 'A':
-            //                     setStatusA(res.isFull);
-            //                     break;
-            //                 case 'B':
-            //                     setStatusB(res.isFull);
-            //                     break;
-            //                 case 'C':
-            //                     setStatusC(res.isFull);
-            //                     break;
-            //                 case 'D':
-            //                     setStatusD(res.isFull);
-            //                     break;
-            //                 case 'H':
-            //                     setStatusH(res.isFull);
-            //                     break;
-            //                 case 'I':
-            //                     setStatusI(res.isFull);
-            //                     break;
-            //             }
-            //             return res.openSpotNumber;
-            //         }
-            //     }
-            //     catch(e){
-            //         console.log("Error: " + e.toString());
-            //     }
-           // };
-
-    // var run = getGarageStatus();
-    // var runtoo = getClosestSpot();
-    //console.log("After getGarageStatus " + run);
-  //}
-
-    // const [statusA, setStatusA] = React.useState(() => getGarageInfo('A'));
-    // const [statusB, setStatusB] = React.useState(() => getGarageInfo('B'));
-    // const [statusC, setStatusC] = React.useState(() => getGarageInfo('C'));
-    // const [statusD, setStatusD] = React.useState(() => getGarageInfo('D'));
-    // const [statusH, setStatusH] = React.useState(() => getGarageInfo('H'));
-    // const [statusI, setStatusI] = React.useState(() => getGarageInfo('I'));
-
-    async function selectGarage(gar)
+    async function getGarageData(gar)
     {
         var garage = "Garage " + gar;
         var capStatus, spotAvailible;
@@ -158,35 +73,57 @@ export default function Reserve()
 
             var txt = await response.text();
             var res = JSON.parse(txt);
-            console.log(res);
+            //console.log(res);
 
             capStatus = res.isFull;
             spotAvailible = res.openSpotNumber;
-            console.log("garage info for " + garage + ": status(" + capStatus + ")  availible spot(" + spotAvailible + ")");
+            const data = {capStatus, spotAvailible};
+            //console.log("garage info for " + garage + ": status(" + capStatus + ")  availible spot(" + spotAvailible + ")");
+            console.log(data);
+            console.log("is garage " + gar +" full: " + data.capStatus);
+            console.log("The next open spot in garage " + gar + " is: " + data.spotAvailible); 
+            
+            if (data.capStatus === false)
+            {
+                return (
+                    <div className={classes.snackRoot}>
+                        <Snackbar
+                          open={open}
+                          onClose={handleSnackClose}
+                          autoHideDuration={6000}
+                        >
+                          <Alert severity="success" onClose={handleSnackClose}>
+                              Yay! This garage is open for parking!
+                              Garage Status: {data.capStatus}
+                              Closest Available Spot: {data.spotAvailible}
+                          </Alert>
+                        </Snackbar>
+                    </div>
+                )
+            }    
+            
+            else
+            {
+                return(
+                    <div className={classes.snackRoot}>
+                        <Snackbar
+                        open={open}
+                        onClose={handleSnackClose}
+                        autoHideDuration={6000}
+                        >
+                        <Alert severity="error" onClose={handleSnackClose}>
+                            Sorry! This garage is full. Choose another garage.
+                        </Alert>
+                        </Snackbar>
+                    </div>
+                )
+            }
         }
         catch(e)
         {
             console.log("Error: " + e.toString());
         }
-
-        return (
-            <div>
-                <a>
-                    Cap status: {capStatus}
-                </a>
-                <a>
-                    Nearest availible spot: {spotAvailible}
-                </a>
-            </div>
-        )
     }
-    
-    // console.log(statusA);
-    // console.log(statusB);
-    // console.log(statusC);
-    // console.log(statusD);
-    // console.log(statusH);
-    // console.log(statusI);
 
     return(
         <React.Fragment>
@@ -216,11 +153,10 @@ export default function Reserve()
                         <MenuItem value={'I'}> I </MenuItem>
                     </Select>
                 </FormControl>
-                <Button className={classes.button} onClick={selectGarage()}>
+                <Button className={classes.button} onClick={() => getGarageData(garage)}>
                     Select Garage
                 </Button>
             </div>
         </React.Fragment>
     )
 }
-// export default withRouter(Reserve);
