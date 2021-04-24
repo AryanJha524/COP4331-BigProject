@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet,SafeAreaView, Button, Dimensions} from "react-native";
+import { View, Text, StyleSheet,SafeAreaView, TouchableOpacity, Dimensions, FlatList} from "react-native";
 import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
 const axios = require('axios');
@@ -9,21 +9,49 @@ const axios = require('axios');
 const GarageList = ({latitude, longitude}) => {
   let history = useHistory();
   
-  const [garageInfo, setGarageInfo] = useState(null);
+  const [garageInfo, setGarageInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+
+  const apiRequest = async () => {
+    const data = await axios.post('https://ucfparkyapi.herokuapp.com/findSpot', {lng:longitude, lat:latitude})
+    setGarageInfo(data);
+  }
 
   useEffect(() => {
     setIsLoading(true);
-    axios.post('https://ucfparkyapi.herokuapp.com/findSpot', {lng:longitude, lat:latitude})
-    .then(res => {
-      setIsLoading(false);
-      setGarageInfo(res);
-    })
-    .catch(err => {
-      console.log(err);
-      setIsLoading(false);
-    })
+    apiRequest();
+    setIsLoading(false);
   }, [])
+
+
+  const handlePress = (garageName) => {
+    for (let i = 0; i < garageInfo.data.length; i++) {
+      if (garageInfo.data[i].name.localeCompare(garageName) == 0) {
+        history.push('/spotclaim')
+      }
+    }
+  }
+
+
+  // component to display each garage 
+  const Item = ({ title }) => (
+    <View>
+      <TouchableOpacity onPress={() => handlePress(title)}>
+        <Text style={styles.text}>
+            {title}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+  
+  const makeItem = (garageName) => {
+    return `${garageName}`;
+  }
+
+  const renderItem = ({ item }) => (
+    <Item title={makeItem(item.name)} />
+  );
   
   return (
     <SafeAreaView style={styles.container}>
@@ -36,21 +64,13 @@ const GarageList = ({latitude, longitude}) => {
           </SafeAreaView>
           :
           <SafeAreaView>
-            <Button
-              title = "Go to spot claim page"
-              onPress = {() => history.push("/spotclaim")}
-            />
-            <Button
-              title = "Print results"
-              onPress = {() => console.log(garageInfo)}
+            <FlatList
+              data={garageInfo.data}
+              renderItem={renderItem}
+              keyExtractor={item => item._id}
             />
           </SafeAreaView>
         }
-        {/* <Button
-            title = "Generate list of garages"
-            // onPress = {() => getListGarage(longitude, latitude)}
-            color = '#ebbd34'
-          /> */}
       </SafeAreaView>
     </SafeAreaView>
   );

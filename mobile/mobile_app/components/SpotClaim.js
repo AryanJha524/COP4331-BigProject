@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, Button, Dimensions} from 'react-native';
-import ParkyHeader from './components/ParkyHeader'
+import ParkyHeader from './ParkyHeader';
 import { useHistory } from "react-router-dom";
 
 

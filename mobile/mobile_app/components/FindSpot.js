@@ -77,6 +77,7 @@ export default function FindSpot () {
         setLongitude(longitude);
         setLocation(true);
     }
+    
     return (
         <SafeAreaView style={styles.container}>
             <ParkyHeader/>
