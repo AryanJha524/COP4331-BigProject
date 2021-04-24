@@ -1,44 +1,78 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { StyleSheet, SafeAreaView, FlatList, Text, View, Button, Dimensions} from 'react-native';
-import ParkyHeader from './ParkyHeader'
+import ParkyHeader from './components/ParkyHeader'
 import { useHistory } from "react-router-dom";
 
 
 // page 6
 
-const spots = [
-  
-];
+const DATA = {
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        28.60116,
+        -81.20498
+      ]
+    },
+    "_id": "608096650ba75f47fb65b89b",
+    "name": "Garage I",
+    "numberSpots": 1231,
+    "spotsArray": [
+      {
+        "_id": "608096650ba75f47fb65b89c",
+        "spot": "0",
+        "isOpen": true
+      },
+      {
+        "_id": "608096650ba75f47fb65b89d",
+        "spot": "1",
+        "isOpen": true
+      },
+      {
+        "_id": "608096650ba75f47fb65b89e",
+        "spot": "2",
+        "isOpen": true
+      }
+    ]
+}
 
 const Item = ({ title }) => (
   <Button title = {title} style={styles.item}>
   </Button>
 );
 
+const makeItem = (spotNo, spotStatus) => {
+  if(spotStatus == true)
+  {
+    var status = "Open";
+  }
+  else
+  {
+    status = "Not Open";
+  }
+  return `Spot ${spotNo} ${status}`;
+}
+
 
 export default function SpotClaim() {
 
   let history = useHistory();
 
-  const[selectedSpot, setSelectedSpot] = useState("")
-
-  var spotNo;
-  var spotStatus;
-
   const renderItem = ({ item }) => (
-    <Item title={item.name} />
+    <Item title={makeItem(item.spot, item.isOpen)} />
   );
+
 
   return (
     <SafeAreaView style = {styles.container}>
       <View style = {styles.header}>
-        <ParkyHeader />
+        <ParkyHeader/>
       </View>
-      <Text style={styles.text}> Garage X </Text>  
+      <Text style={styles.text}> {DATA.name} </Text>  
       <FlatList
-        data = {spots}
+        data = {DATA.spotsArray}
         renderItem={renderItem}
-        keyExtractor={item => item.key}
+        keyExtractor={item => item._id}
       />
       <Button
         title="Return to home"
@@ -73,5 +107,10 @@ const styles = StyleSheet.create({
       marginTop: 50,
       marginBottom: 50,
       textAlign:"center"
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16
   }
 });
