@@ -5,7 +5,7 @@ const loginStyle = makeStyles((theme) => ({
       height: '100vh',
     },
     image: {
-      backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/carLoginPic.jpg'})`,
+      backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/newAppBackground.jpg'})`,
       backgroundRepeat: 'no-repeat',
       backgroundColor:
         theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -25,6 +25,9 @@ const loginStyle = makeStyles((theme) => ({
         position: 'relative',
         marginLeft: 0,
         width: '100%',
+      },
+      custom: {
+        color: "white",
       },
     paper: {
       margin: theme.spacing(8, 4),

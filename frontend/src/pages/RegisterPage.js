@@ -18,21 +18,10 @@ export default function RegisterPage(){
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
-
-  // handleEmail: function(e){
-  //   this.setEmail({email: e.target.value});
-  // }
-  
-  // const handlePassword = (password) => {
-  //   this.setPassword(password);
-  // }
-
-  // const handleConfirmPassword = (confirmPassword) => {
-  //   this.setConfirmPassword(confirmPassword);
-  // }
   
   // function verifyEmail(email)
   // {
@@ -60,6 +49,7 @@ export default function RegisterPage(){
     var user = userCredential.user;
     user.sendEmailVerification();
     alert("email sent to " + email);
+    auth.signOut()
     console.log(user)
     history.push('/login')
   })
@@ -93,6 +83,7 @@ export default function RegisterPage(){
           <Typography component="h1" variant="h5">
             Register Here
           </Typography>
+          {message && <Alert variant="success">{message}</Alert>}
           {error && <Alert variant="danger">{error}</Alert>}
           <form className={classes.form} noValidate>
             <TextField
@@ -135,11 +126,10 @@ export default function RegisterPage(){
               onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
-            <Typography color="error"> {error} </Typography>
+            /> */}
             <Button
               onClick={handleSignUp}
               type="submit"
